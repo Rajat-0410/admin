@@ -1,0 +1,133 @@
+/* Admin Style CSS */
+.error{
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: #dd4b39 !important;
+    display: block;
+}
+.right-border{
+    border-right: #d2d6de 1px solid;
+}
+.left-border{
+    border-left: #d2d6de 1px solid;
+}
+#mediaCont{ height: 380px; overflow-y: scroll; }
+.modal .nav-tabs-custom{ margin-bottom: 0; border: none !important; box-shadow: none; }
+/*.dropzone-upload{
+    border: 4px dashed #c7c7c7;
+    border-radius: 5px;
+    background: #e9e9e9;
+    min-height: 122px;
+    padding: 90px 50px;
+}*/
+
+.img-row{
+    
+}
+
+.img-col{
+    margin-bottom: 15px;
+}
+
+.img-container{
+    border: #ddd 1px solid;
+    padding: 5px;
+    width: 160px;
+    height: 150px;
+    /*display: table-cell;
+    vertical-align: middle;*/
+    background: #e9e9e9;
+}
+
+.img-responsive{
+    max-height: 140px;
+    margin: 0 auto;
+}
+.img-actions{
+    text-align: center;
+    margin-top: 5px;   
+}
+.img-actions a{
+   border: #ddd 1px solid;
+   padding: 5px;
+   color: #333;
+   background-color: #e9e9e9;
+}
+/*.view-img:first-child{
+    margin-right: 5px;
+    padding-right: 5px;
+}*/
+
+.btn-med{
+    min-width: 100px;
+    min-height: 40px;
+    font-size: 15px;
+    font-weight: 600;
+}
+.btn-container{
+    margin-top: 10px;
+}
+.box-body{
+    
+}
+.feature-image{
+    border: 2px dashed #c7c7c7;
+    border-radius: 2px;
+    background: #e9e9e9;
+    min-height: 20px;
+    padding: 10px 40px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    float: left;
+    width: 100%;
+    text-align: center;
+}
+
+.media-browse-modal{
+    
+}
+
+@media (min-width: 768px) {
+  .modal-xl { width: 90%; max-width:1200px; }
+}
+
+.hide{ display: none; }
+.show{ display: block; }
+.media-img-container{
+    border: #ddd 1px solid;
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+
+.borderTop{
+    border-top: solid;
+}
+
+.borderGrey{
+    border-color: #ddd;
+}
+
+.mrgTop10{
+    margin-top: 10px;
+}
+
+.padTop10{
+    paddin-top: 10px;
+}
+
+
+/*jquery-ui.js css => START */
+.handle{cursor: move}
+#sortable { 
+    list-style-type: none; 
+    margin: 0; 
+    padding: 0; 
+    /*width: 60%; */
+}
+/*#sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }*/
+/*#sortable li span { position: absolute; margin-left: -1.3em; }*/
+/*jquery-ui.js css => END */
+
+.loader-overlay{ opacity: 0.5; background: #000; width: 100%; height: 100%; z-index: 10; top: 0; left: 0; position: fixed; display: none; }
+.loader-img{ display: none; left: 230px; position: fixed; text-align: center; top: 290px; width: 70%; z-index: 99999; }
