@@ -4,7 +4,7 @@
 
 <div class="login-box">
     <div class="login-logo">
-        <a href=""><b>Gixxer Cup</b> ADMIN</a>
+        <a href=""><b>Homeodocs</b> Panel</a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">

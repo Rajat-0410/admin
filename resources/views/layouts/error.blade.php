@@ -1,1 +1,177 @@
-<!DOCTYPE html><html lang="en">    <head>        <title><?php echo isset($meta_title) ? $meta_title : env('APP_NAME'); ?></title>        <meta charset="utf-8">        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">        <meta name="keywords" content="<?php echo isset($meta_keywords) ? $meta_keywords : ''; ?>"/>        <meta name="description" content="<?php echo isset($meta_description) ? $meta_description : ''; ?>"/>        <!-- Tell the browser to be responsive to screen width -->        <meta name="csrf-token" content="{{ csrf_token() }}">                <!--[if IE 7 ]>    <html class="ie7"> <![endif]-->        <!--[if IE 8 ]>    <html class="ie8"> <![endif]-->        <!--[if IE 9 ]>    <html class="ie9"> <![endif]-->        <!--[if !IE]><!--><script>if (/*@cc_on!@*/false) {                document.documentElement.className = 'ie10';            }</script><!--<![endif]-->        <link rel="shortcut icon" href="{{ asset("images/website/favicon.png") }}" type="image/x-icon">        <link rel="icon" href="{{ asset("images/website/favicon.png") }}" type="image/x-icon">        <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,300i,400,400i,500,500i,600,600i,700,900" rel="stylesheet">        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">        <!-- Bootstrap -->        <link rel="stylesheet" href="{{ asset('css/website/bootstrap.min.css') }}">        <link rel="stylesheet" href="{{ asset('css/website/responsive.css') }}">        <link rel="stylesheet" href="{{ asset('css/website/style_v3.css') }}">        <link rel="stylesheet" href="{{ asset('css/website/custom_v3.css') }}">        <!--<link rel="stylesheet" href="{{ asset('css/website/jcarousel.responsive.css') }}">-->               <!-- jQuery -->        <script src="{{ asset('js/website/jquery.min.js') }}"></script>        <script src="{{ asset('js/website/jquery.js') }}"></script>        <!-- Bootstrap -->        <script src="{{ asset('js/website/bootstrap.min.js') }}"></script>        <!-- Validate JS -->        <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>        <!--<script src="{{ asset('js/validate/jquery.validate.js') }}"></script>-->        <!-- bootbox.min JS -->        <script src="{{ asset('js/bootbox.min.js') }}"></script>        <!-- Common JS -->        <script src="{{ asset('js/website/common_v4.js') }}"></script>                <script type="text/javascript">            var SITE_URL = '<?php echo getenv('APP_URL'); ?>';            var IMAGE_ROOT_PATH = '<?php echo asset("images/website/"); ?>';        </script>    </head>    <body>                <header id="header" class="inner_header">            <div class="top_header">                <img src="https://www.suzukimotorcycle.co.in/images/website/header_bg.png" alt="" class="zoom">            </div>            <div class="wrap">                <div class="container">                    <div class="top_section">                        <div class="logo_box">                            <a href="/"><img src="https://www.suzukimotorcycle.co.in/images/website/logo.jpg" alt="logo" class="ld-hide"></a>                            <a href="/"><img src="https://www.suzukimotorcycle.co.in/images/website/m-logo.jpg" alt="logo" class="md-hide"></a>                        </div>                                                <div class="left_menu">                            <ul>                                <li class="">                                    <a href="https://www.suzukimotorcycle.co.in/products">Products</a>                                </li>                                <li class="">                                    <a href="https://www.suzukimotorcycle.co.in/racing">Racing</a>                                </li>                                <li class="">                                    <a href="https://www.suzukimotorcycle.co.in/accessories">Accessories</a>                                </li>                                <li class="">                                    <a href="https://www.suzukimotorcycle.co.in/support">Support</a>                                </li>                                <li class="">                                    <a href="https://www.suzukimotorcycle.co.in/career">Career</a>                                </li>                            </ul>                        </div>                    </div>                    <div class="nav-button">                        <button class="hamburger hamburger--boring" type="button">                            <span class="hamburger-box">                                <span class="hamburger-inner"></span>                            </span>                        </button>                    </div>                      <div class="left_section ">                    </div>                    <div class="hero">                        <header id="masthead" role="banner">                            <nav id="site-nav" role="navigation">                                <div class="nav-logo_box m-logo-box ">                                    <a href="/"><img src="https://www.suzukimotorcycle.co.in/images/website/logo.jpg" alt="logo" class="ld-hide"></a>                                    <a href="/"><img src="https://www.suzukimotorcycle.co.in/images/website/m-logo.jpg" alt="logo" class="md-hide"></a>                                </div>                                <div class="col">                                    <ul>                                        <li><a href="https://www.suzukimotorcycle.co.in/products">Products</a></li>                                        <li><a href="https://www.suzukimotorcycle.co.in/racing">Racing</a></li>                                        <li><a href="https://www.suzukimotorcycle.co.in/accessories">Accessories</a></li>                                        <li><a href="https://www.suzukimotorcycle.co.in/support">Support</a></li>                                        <li><a href="https://www.suzukimotorcycle.co.in/career">Career</a></li>                                    </ul></div><div class="col"><ul>                                                                        <li><a href="https://www.suzukimotorcycle.co.in/about-us">About</a></li>                                        <li><a href="https://www.suzukimotorcycle.co.in/media">Media</a></li>                                        <li><a href="https://www.suzukimotorcycle.co.in/service">Service</a></li>                                        <li><a href="https://www.suzukimotorcycle.co.in/dealer-zone">Dealer Zone</a></li>                                        <li><a href="https://www.suzukimotorcycle.co.in/offers">Offers</a></li>                                    </ul>                                </div>                                <div class="col">                                    <ul class="books">                                        <li class="icons"><a href="https://booknow.suzukimotorcycle.co.in/all_models" target="_blank">Book online</a></li>                                        <li class="icons-2"><a href="https://www.suzukimotorcycle.co.in/find-dealer">Find dealer</a></li>                                        <li class="icons-3"><a href="https://www.suzukimotorcycle.co.in/book-test-ride">Book Test Ride</a></li>                                        <li class="icons-4"><a href="https://www.suzukimotorcycle.co.in/popular-tags">Popular tags</a></li>                                    </ul>                                    <div class="social_menus">                                        <ul class="facebook_social">                                            <li>                                                <a href="https://www.facebook.com/Suzuki2Wheelers/" target="_balnk">                                                    <img src="https://www.suzukimotorcycle.co.in/images/website/facebook_mini.png" alt="Facebook">                                                </a>                                            </li>                                            <li>                                                <a href="https://twitter.com/suzuki2wheelers" target="_balnk">                                                    <img src="https://www.suzukimotorcycle.co.in/images/website/twitter_mini.png" alt="Twitter">                                                </a>                                            </li>                                            <li>                                                <a href="https://www.instagram.com/suzuki2wheelers/" target="_balnk">                                                    <img src="https://www.suzukimotorcycle.co.in/images/website/instagram_mini.png" alt="Instagram">                                                </a>                                            </li>                                            <li>                                                <a href="https://www.youtube.com/channel/UCjVm-ARl4jm9k2eFn2kAb5g?view_as=subscriber" target="_balnk">                                                    <img src="https://www.suzukimotorcycle.co.in/images/website/youtube_mini.png" alt="Youtube">                                                </a>                                            </li>                                            <li>                                                <a href="https://in.linkedin.com/company/suzuki-motorcycle-india-ltd-" target="_balnk">                                                    <img src="https://www.suzukimotorcycle.co.in/images/website/linkedin_mini.png" alt="Linkedin">                                                </a>                                            </li>                                        </ul>                                    </div>                                               </div>                            </nav>                        </header>                    </div>                </div>            </div>        </header>        <!-- Page Content -->        @yield('page-content')        <!-- Page Content -->        <footer id="footer">            <div class="container">                    <div class="row">                <div class="col-sm-7 footer_left">                    <div class="footer_top">                        <ul>                                                                            <li class="">                                <a href="https://www.suzukimotorcycle.co.in/about-us">                                    About                            </a>                            </li>                                                                            <li class="">                                <a href="https://www.suzukimotorcycle.co.in/media-kit">                                    Media Kit                            </a>                            </li>                                                                            <li class="">                                <a href="https://www.suzukimotorcycle.co.in/service">                                    Service                            </a>                            </li>                                                                            <li class="">                                <a href="https://www.suzukimotorcycle.co.in/dealer-zone">                                    Dealer Zone                            </a>                            </li>                                                                            <li class="">                                <a href="https://www.suzukimotorcycle.co.in/offers">                                    Offers                            </a>                            </li>                                                </ul>                    </div>                    <div class="footer_bottom">                        <ul>                                                                            <li class="">                                <a href="https://www.suzukimotorcycle.co.in/sitemap">                                    Sitemap                            </a>                            </li>                                                                            <li class="">                                <a href="https://www.suzukimotorcycle.co.in/cookie-policy">                                    Cookie Policy                            </a>                            </li>                                                                            <li class="">                                <a href="https://www.suzukimotorcycle.co.in/term-of-use">                                    Term Of Use                            </a>                            </li>                                                                            <li class="">                                <a href="https://www.suzukimotorcycle.co.in/privacy-policy">                                    Privacy Policy                            </a>                            </li>                                                                            <li class="">                                <a href="https://www.suzukimotorcycle.co.in/disclaimer">                                    Disclaimer                            </a>                            </li>                                                </ul>                    </div>                </div>                <div class="col-sm-5 social_icon">                    <ul>                        <li>                            <a href="http://www.globalsuzuki.com/motorcycle/" target="_balnk"> <img src="https://www.suzukimotorcycle.co.in/images/website/globe.png" alt="global"> </a>                        </li>                                            <li>                            <a href="https://www.facebook.com/Suzuki2Wheelers/" target="_balnk"> <img src="https://www.suzukimotorcycle.co.in/images/website/facebook.png" alt="Facebook"> </a>                        </li>                        <li>                            <a href="https://twitter.com/suzuki2wheelers" target="_balnk"> <img src="https://www.suzukimotorcycle.co.in/images/website/twitter.png" alt="Twitter"></a>                        </li>                        <li>                            <a href="https://www.instagram.com/suzuki2wheelers/" target="_balnk"> <img src="https://www.suzukimotorcycle.co.in/images/website/instagram.png" alt="Instagram"> </a>                        </li>                        <li>                            <a href="https://www.youtube.com/channel/UCjVm-ARl4jm9k2eFn2kAb5g?view_as=subscriber" target="_balnk"> <img src="https://www.suzukimotorcycle.co.in/images/website/youtube.png" alt="Youtube"> </a>                        </li>                        <li>                            <a href="https://in.linkedin.com/company/suzuki-motorcycle-india-ltd-" target="_balnk"><img src="https://www.suzukimotorcycle.co.in/images/website/linkedin.png" alt="Linkedin"></a>                        </li>                    </ul>                    <div class="sep1"><a href="https://www.suzukimotorcycle.co.in/sep" target="_blank">                    <img src="https://www.suzukimotorcycle.co.in/images/website/sep-01.png" alt="sep"></a></div>                </div>            </div>        </div>    </footer>                <script src="{{ asset('js/website/jquery.jcarousel.min.js') }}"></script>        <script src="{{ asset('js/website/plugin.js') }}"></script>    </body></html>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title><?php echo isset($meta_title) ? $meta_title : env('APP_NAME'); ?></title>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <meta name="keywords" content="<?php echo isset($meta_keywords) ? $meta_keywords : ''; ?>"/>
+        <meta name="description" content="<?php echo isset($meta_description) ? $meta_description : ''; ?>"/>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">        
+
+        <!--[if IE 7 ]>    <html class="ie7"> <![endif]-->
+
+        <!--[if IE 8 ]>    <html class="ie8"> <![endif]-->
+
+        <!--[if IE 9 ]>    <html class="ie9"> <![endif]-->
+
+        <!--[if !IE]><!--><script>if (/*@cc_on!@*/false) {
+                document.documentElement.className = 'ie10';
+            }</script><!--<![endif]-->
+
+        <link rel="shortcut icon" href="{{ asset("images/website/favicon.png") }}" type="image/x-icon">
+
+        <link rel="icon" href="{{ asset("images/website/favicon.png") }}" type="image/x-icon">
+
+        <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,300i,400,400i,500,500i,600,600i,700,900" rel="stylesheet">
+
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+        <!-- Bootstrap -->
+
+        <link rel="stylesheet" href="{{ asset('css/website/bootstrap.min.css') }}">
+
+
+        <link rel="stylesheet" href="{{ asset('css/website/responsive.css') }}">
+
+        <link rel="stylesheet" href="{{ asset('css/website/style_v3.css') }}">
+
+        <link rel="stylesheet" href="{{ asset('css/website/custom_v3.css') }}">
+
+        <!--<link rel="stylesheet" href="{{ asset('css/website/jcarousel.responsive.css') }}">-->       
+
+        <!-- jQuery -->
+
+        <script src="{{ asset('js/website/jquery.min.js') }}"></script>
+
+        <script src="{{ asset('js/website/jquery.js') }}"></script>
+
+        <!-- Bootstrap -->
+
+        <script src="{{ asset('js/website/bootstrap.min.js') }}"></script>
+
+        <!-- Validate JS -->
+
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+
+        <!--<script src="{{ asset('js/validate/jquery.validate.js') }}"></script>-->
+
+        <!-- bootbox.min JS -->
+
+        <script src="{{ asset('js/bootbox.min.js') }}"></script>
+
+        <!-- Common JS -->
+
+        <script src="{{ asset('js/website/common_v4.js') }}"></script>
+
+        
+
+        <script type="text/javascript">
+
+            var SITE_URL = '<?php echo getenv('APP_URL'); ?>';
+
+            var IMAGE_ROOT_PATH = '<?php echo asset("images/website/"); ?>';
+
+        </script>
+
+    </head>
+
+    <body>
+        
+        <header id="header" class="inner_header">
+
+            <div class="top_header">
+                <img src="" alt="" class="zoom">
+            </div>
+            <div class="wrap">
+                <div class="container">
+                    <div class="top_section">
+                        <div class="logo_box">
+                            <a href="/"><img src="{{ asset('images/website/logo.png') }}" style="height:50px;" alt="logo" class="ld-hide"></a>
+                            <a href="/"><img src="{{ asset('images/website/logo.png') }}" style="height:50px;" alt="logo" class="md-hide"></a>
+                        </div>
+                    </div>
+
+                    <div class="nav-button">
+                        <button class="hamburger hamburger--boring" type="button">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
+
+                    </div>  
+                    <div class="left_section ">
+
+                    </div>
+
+                    <div class="hero">
+                        <header id="masthead" role="banner">
+
+                            <nav id="site-nav" role="navigation">
+
+                                <div class="nav-logo_box m-logo-box ">
+
+                                    <a href="/"><img src="{{ asset('images/website/logo.png') }}" style="height:50px;" alt="logo" class="ld-hide"></a>
+                                    <a href="/"><img src="{{ asset('images/website/logo.png') }}" style="height:50px;" alt="logo" class="md-hide"></a>
+                                </div>
+
+                                <div class="col">
+                                    <div class="social_menus">
+                                        <ul class="facebook_social">
+                                            <li>
+                                                <a href="#" target="_balnk">
+                                                    <img src="" alt="Facebook">
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="#" target="_balnk">
+                                                    <img src="" alt="Twitter">
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="#" target="_balnk">
+                                                    <img src="" alt="Instagram">
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="#" target="_balnk">
+                                                    <img src="" alt="Youtube">
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="#" target="_balnk">
+                                                    <img src="" alt="Linkedin">
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>               
+                                </div>
+
+                            </nav>
+                        </header>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        @yield('page-content')
+        <!-- Page Content -->
+
+        <footer id="footer">
+            <div class="container">        
+            <div class="row">
+            </div>
+        </div>
+    </footer>
+        
+        <script src="{{ asset('js/website/jquery.jcarousel.min.js') }}"></script>
+        <script src="{{ asset('js/website/plugin.js') }}"></script>
+
+    </body>
+
+</html>

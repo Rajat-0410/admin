@@ -49,7 +49,7 @@ class WebsiteCommonController extends Controller
             if(!empty($input) && !empty($input['cookie_value'])){
                 // 
                 $cookie_value = $input['cookie_value'];
-                $cookie_name = "gixxer_cup_cookie_policy";
+                $cookie_name = "homeodocs_cookie_policy";
                 setcookie($cookie_name, $cookie_value, time() + (86400 * 7), "/"); // 86400 = 1 day
                 // 
                 $status = 1; 

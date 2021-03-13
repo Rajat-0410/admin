@@ -159,9 +159,9 @@ class Controller extends BaseController
         // print("<pre>"); print_r($this->viewData); exit('all');    
         
         // getCookie
-        $gixxer_cup_cookie_policy = Cookie::get('gixxer_cup_cookie_policy');
-        $this->viewData['gixxer_cup_cookie_policy'] = $gixxer_cup_cookie_policy;
-        // dd($gixxer_cup_cookie_policy);
+        $homeodocs_cookie_policy = Cookie::get('homeodocs_cookie_policy');
+        $this->viewData['homeodocs_cookie_policy'] = $homeodocs_cookie_policy;
+        // dd($homeodocs_cookie_policy);
     }
     
 }
