@@ -3,9 +3,9 @@
     <!-- Logo -->
     <a href="{{url('admin/dashboard')}}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>TC</b>AP</span>
+        <span class="logo-mini"><b>HD</b>P</span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Tennis Club</b> Admin Panel</span>
+        <span class="logo-lg"><b>Homeodocs</b> Panel</span>
     </a>
 
     <!-- Header Navbar: style can be found in header.less -->
@@ -33,10 +33,6 @@
                             </div>
                         </li>
                     </ul>
-                </li>
-                <!-- Control Sidebar Toggle Button -->
-                <li>
-                    <a href="{{ url('admin/general-settings') }}" title="Settings"><i class="fa fa-gears"></i></a>
                 </li>
             </ul>
         </div>

@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Tennis Club Admin</title>
+        <title>Homeodocs</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -38,7 +38,9 @@
         <script src="{{ asset('js/admin/common.js') }}"></script>
         <!-- Moment JS -->
         <script src="{{ asset('js/website/moment.min.js') }}"></script>
-        
+        <!-- Favicon -->
+        <link rel="icon" href="{{ URL::asset('/images/website/logo.png') }}" type="image/x-icon"/>
+
         <script type="text/javascript">
             var SITE_URL = '<?php echo getenv('APP_URL'); ?>';
         </script>

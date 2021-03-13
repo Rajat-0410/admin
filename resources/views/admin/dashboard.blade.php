@@ -32,8 +32,8 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body" style="min-height: 400px;">
-                <h1 class="text-center text-aqua"><i class="fa fa-lg fa-motorcycle"></i></h1>
-                <h1 class="text-center">Welcome to Suzuki Admin Panel</h1>
+                <h1 class="text-center text-aqua"><img src="{{ asset("images/website/logo.png") }}" class="img-responsive"></h1>
+                <h1 class="text-center">Welcome to Homeodocs Panel</h1>
                 <!-- /.table-responsive -->
             </div>
             <!-- /.box-body -->

@@ -15,25 +15,6 @@ Route::get('/', ['as' => 'home', 'uses' => 'Website\HomeController@index']);
 Route::get('/about-us', ['as' => 'about-us', 'uses' => 'Website\HomeController@aboutUs']);
 Route::get('/contact-us', ['as' => 'contact-us', 'uses' => 'Website\HomeController@contactUs']);
 Route::post('/store-contact-us', ['as' => 'store-contact-us', 'uses' => 'Website\HomeController@storeContactUs']);
-// Centers
-Route::get('/club-5', ['as' => 'club-5', 'uses' => 'Website\CentersController@club5']);
-Route::get('/club-vita', ['as' => 'club-vita', 'uses' => 'Website\CentersController@clubVita']);
-Route::get('/crest-club', ['as' => 'crest-club', 'uses' => 'Website\CentersController@crestClub']);
-// Membership
-Route::get('membership', ['as' => 'membership', 'uses' => 'Website\MembershipController@membership']);
-Route::post('membership/store', ['as' => 'membership/store', 'uses' => 'Website\MembershipController@membershipadd']);
-
-// Route::get('/kids', ['as' => 'kids', 'uses' => 'Website\MembershipController@kids']);
-// Route::get('/adults', ['as' => 'adults', 'uses' => 'Website\MembershipController@adults']);
-// Route::get('/professional', ['as' => 'professional', 'uses' => 'Website\MembershipController@professional']);
-// Training
-Route::get('/progressive', ['as' => 'progressive', 'uses' => 'Website\TrainingController@progressive']);
-Route::get('/beginner', ['as' => 'beginner', 'uses' => 'Website\TrainingController@beginner']);
-Route::get('/intermediate', ['as' => 'intermediate', 'uses' => 'Website\TrainingController@intermediate']);
-Route::get('/advance', ['as' => 'advance', 'uses' => 'Website\TrainingController@advance']);
-Route::get('/personalized-coaching', ['as' => 'personalized-coaching', 'uses' => 'Website\TrainingController@personalizedCoaching']);
-// Gallery
-Route::get('/tennis-gallery', ['as' => 'tennis-gallery', 'uses' => 'Website\GalleryController@index']);
 
 // Route::get('/pages/{slug}', ['as' => 'pages', 'uses' => 'Website\HomeController@commonPage']);
 
@@ -130,31 +111,6 @@ Route::prefix('admin')->group(function () {
     Route::get('user-permission/delete/{id}', ['as' => 'user-permission/delete', 'uses' => 'UserPermission\UserPermissionController@delete'])->middleware('auth','check-permission');
     Route::post('user-permission/store', ['as' => 'user-permission/store', 'uses' => 'UserPermission\UserPermissionController@store'])->middleware('auth','check-permission');
     // User Role => END
-
-    // Gallery => START
-    Route::get('gallery', ['as' => 'gallery', 'uses' => 'Gallery\GalleryController@index'])->middleware('auth','check-permission');
-    // Route::get('gallery/add', ['as' => 'gallery/add', 'uses' => 'Gallery\GalleryController@add'])->middleware('auth','check-permission');
-    // Route::get('gallery/edit/{id}', ['as' => 'gallery/edit', 'uses' => 'Gallery\GalleryController@edit'])->middleware('auth','check-permission');
-    // Route::get('gallery/delete/{id}', ['as' => 'gallery/delete', 'uses' => 'Gallery\GalleryController@delete'])->middleware('auth','check-permission');
-    // Route::post('gallery/store', ['as' => 'gallery/store', 'uses' => 'Gallery\GalleryController@store'])->middleware('auth','check-permission');
-    
-    Route::get('gallery-image/{galleryId}', ['as' => 'gallery-image', 'uses' => 'Gallery\GalleryImageController@index'])->middleware('auth','check-permission');
-    Route::post('gallery-image/upload', ['as' => 'gallery-image/upload', 'uses' => 'Gallery\GalleryImageController@uploadImage'])->middleware('auth','check-permission');
-    Route::post('gallery-image/delete', ['as' => 'gallery-image/delete', 'uses' => 'Gallery\GalleryImageController@delete'])->middleware('auth','check-permission');
-    
-    Route::get('gallery-video', ['as' => 'gallery-video', 'uses' => 'Gallery\GalleryController@videoIndex'])->middleware('auth','check-permission');
-    Route::get('gallery-video/{galleryId}', ['as' => 'gallery-video', 'uses' => 'Gallery\GalleryVideoController@index'])->middleware('auth','check-permission');
-    Route::post('gallery-video/uploadThumb', ['as' => 'gallery-video/uploadThumb', 'uses' => 'Gallery\GalleryVideoController@uploadThumb'])->middleware('auth','check-permission');
-    Route::post('gallery-video/uploadVideo', ['as' => 'gallery-video/uploadVideo', 'uses' => 'Gallery\GalleryVideoController@uploadVideo'])->middleware('auth','check-permission');
-    
-    Route::post('gallery-video/get-media-image', ['as' => 'gallery-video/get-media-image', 'uses' => 'Gallery\GalleryVideoController@getMediaImages'])->middleware('auth','check-permission');
-
-    Route::get('gallery-video/add/{galleryId}', ['as' => 'gallery-video/add', 'uses' => 'Gallery\GalleryVideoController@add'])->middleware('auth','check-permission');
-    Route::post('gallery-video/store/{galleryId}', ['as' => 'gallery-video/store', 'uses' => 'Gallery\GalleryVideoController@store'])->middleware('auth','check-permission');
-    Route::get('gallery-video/edit/{id}', ['as' => 'tournament-gallery-video/edit', 'uses' => 'TournamentGallery\TournamentGalleryVideoController@edit'])->middleware('auth','check-permission');
-    Route::get('gallery-video/delete/{galleryId}/{roundId}/{id}', ['as' => 'tournament-gallery-video/delete', 'uses' => 'TournamentGallery\TournamentGalleryVideoController@delete'])->middleware('auth','check-permission');
-    
-    // Gallery => END
     
     // Action Logs => START
     Route::get('action-logs', ['as' => 'action-logs', 'uses' => 'ActionLog\ActionLogController@index'])->middleware('auth','check-permission');
