@@ -4,36 +4,26 @@ namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class Consult extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'users';
+    protected $table = 'consults';
     public $field;
-
-    public function user_role() {
-        return $this->belongsTo('App\Http\Models\UserRole','role_id')
-            ->select('id','role','home_page')
-            ->where('is_deleted', '=' , 0);
-    }
-    public function patient() {
-        return $this->hasOne('App\Http\Models\Patient','user_id')
-			->where('status', '=' , 1)
-            ->where('is_deleted', '=' , 0);
-    }
     
-    public function getUserDataById($id=0) {
+    public function getDataById($id=0) {
         $arrResp    = [];
         $arrData    = [];
         $status     = 0;
         $message    = '';
         try {
-            $arrData = self::select('id','role_id','name')
-                        ->with('user_role')
+            $arrData = self::select('id','patient_id', 'disease_name','disease_type','symptoms', 'bathing_habit', 'sleep', 'dreams', 'menstrual_history', 'obstetric_history', 'sexual_history', 'family_history', 'blood_pressure', 'pulse_rate', 'temprature', 'appetite', 'thirst', 'addiction', 'thermalReaction', 'perspiration', 'urine', 'stool', 'desire', 'created_at', 'updated_at')
                         ->where('id','=',$id)
+                        ->where('status','=',1)
+                        ->where('is_deleted','=',0)
                         ->first(); 
             $status = 1;
             $message = 'success';
@@ -49,27 +39,24 @@ class User extends Model
         return $arrResp;
     }
 
-    public function getDataWithPaginate($paginate = 10, $searchKeyword = '',$role_id = 0) {
+    public function getDataWithPaginate($paginate = 10, $searchKeyword = '',$patient_id = 0) {
         $arrResp = [];
         $arrData = [];
         $status = 0;
         $message = '';
         try {
             $query = self::query();
-            $query->select('id', 'role_id', 'name', 'email','mobile','address','mobile','status','created_at','updated_at');
-            $query->with('user_role');
+            $query->select('id', 'patient_id', 'disease_name','disease_type', 'created_at', 'updated_at');
+            // $query->with('consult_image');
             // Search Keyword
             if(!empty($searchKeyword)) {
-                $searchKeywordString = "(name LIKE '%$searchKeyword%' OR email LIKE '%$searchKeyword%' OR mobile LIKE '%$searchKeyword%')";
+                $searchKeywordString = "(disease_name LIKE '%$searchKeyword%')";
                 $query->whereRaw($searchKeywordString);
-            }
-            if(!empty($role_id)) {
-                $query->Where('role_id', '=', $role_id);
             }
             $query->where('is_deleted', '=', 0);
             $query->orderBy('created_at', 'desc');
             $arrData = $query->paginate($paginate);            
-            // print("<pre>"); print_r($query->toSql()); exit('modal');
+            // print("<pre>"); print_r($arrData); exit('modal');
             $message = 'Data';
             $status = 1;
         } catch (\Exception $ex) {
@@ -83,33 +70,7 @@ class User extends Model
         return $arrResp;
     }
 
-    public function getUserDataWithPatientData($user_id='') {
-        $arrResp    = [];
-        $arrData    = [];
-        $status     = 0;
-        $message    = '';
-        try {
-            $arrData = self::select('id','name', 'mobile', 'email', 'address')
-						->with('patient')
-                        ->where('id','=',$user_id)
-						->where('status','=',1)
-						->where('is_deleted','=',0)
-                        ->first(); 
-            $status = 1;
-            $message = 'success';
-            // print("<pre>"); print_r($arrData); exit('Model');
-        } catch (Exception $ex) {
-            $status = 0;
-            $message = $ex->getMessage();
-        }
-        $arrResp['status'] = $status;
-        $arrResp['message'] = $message;
-        $arrResp['data'] = $arrData;
-        
-        return $arrResp;
-    }
-
-    public function addUser() {
+    public function addConsult() {
         $arrResp    = [];
         $status     = 0;
         $message    = '';
@@ -138,7 +99,7 @@ class User extends Model
         return $arrResp;
     }
     
-    public function updateUser() {
+    public function updateConsult() {
         $arrResp    = [];
         $status     = 0;
         $message    = '';
@@ -171,7 +132,7 @@ class User extends Model
         return $arrResp;
     }
 
-    public function deleteUser() {
+    public function deleteConsult() {
         $arrResp    = [];
         $status     = 0;
         $message    = '';

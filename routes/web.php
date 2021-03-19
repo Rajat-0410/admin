@@ -86,10 +86,11 @@ Route::prefix('admin')->group(function () {
     Route::post('upload-media-image', ['as' => 'upload-media-image', 'uses' => 'Media\MediaController@uploadMediaImage'])->middleware('auth','check-permission');
     // Media => END
             
-    // Event Video Gallery => START
+    // General Setting => START
     Route::get('general-settings', ['as' => 'general-settings', 'uses' => 'Settings\GeneralSettingsController@index'])->middleware('auth','check-permission');
     Route::post('general-settings/change-settings', ['as' => 'change-settings', 'uses' => 'Settings\GeneralSettingsController@changeSettings'])->middleware('auth','check-permission');
-    // Event Video Gallery => END
+    // General Setting => END
+
     // User Management => START
     Route::get('user-management', ['as' => 'user-management', 'uses' => 'UserManagement\UserManagementController@index'])->middleware('auth','check-permission');
     Route::get('user-management/add', ['as' => 'user-management/add', 'uses' => 'UserManagement\UserManagementController@add'])->middleware('auth','check-permission');
@@ -97,6 +98,7 @@ Route::prefix('admin')->group(function () {
     Route::get('user-management/delete/{id}', ['as' => 'user-management/delete', 'uses' => 'UserManagement\UserManagementController@delete'])->middleware('auth','check-permission');
     Route::post('user-management/store', ['as' => 'user-management/store', 'uses' => 'UserManagement\UserManagementController@store'])->middleware('auth','check-permission');
     // User Management => END
+
     // User Role => START
     Route::get('user-role', ['as' => 'user-role', 'uses' => 'UserRole\UserRoleController@index'])->middleware('auth','check-permission');
     Route::get('user-role/add', ['as' => 'user-role/add', 'uses' => 'UserRole\UserRoleController@add'])->middleware('auth','check-permission');
@@ -104,13 +106,24 @@ Route::prefix('admin')->group(function () {
     Route::get('user-role/delete/{id}', ['as' => 'user-role/delete', 'uses' => 'UserRole\UserRoleController@delete'])->middleware('auth','check-permission');
     Route::post('user-role/store', ['as' => 'user-role/store', 'uses' => 'UserRole\UserRoleController@store'])->middleware('auth','check-permission');
     // User Role => END
-    // User Role => START
+
+    // User Permission => START
     Route::get('user-permission', ['as' => 'user-permission', 'uses' => 'UserPermission\UserPermissionController@index'])->middleware('auth','check-permission');
     Route::get('user-permission/add', ['as' => 'user-permission/add', 'uses' => 'UserPermission\UserPermissionController@add'])->middleware('auth','check-permission');
     Route::get('user-permission/edit/{id}', ['as' => 'user-permission/edit', 'uses' => 'UserPermission\UserPermissionController@edit'])->middleware('auth','check-permission');
     Route::get('user-permission/delete/{id}', ['as' => 'user-permission/delete', 'uses' => 'UserPermission\UserPermissionController@delete'])->middleware('auth','check-permission');
     Route::post('user-permission/store', ['as' => 'user-permission/store', 'uses' => 'UserPermission\UserPermissionController@store'])->middleware('auth','check-permission');
-    // User Role => END
+    // User Permission => END
+
+    // Patient => START
+    Route::get('patient', ['as' => 'patient', 'uses' => 'PatientManagement\PatientManagementController@index'])->middleware('auth','check-permission');
+    Route::get('patient/view/{id}', ['as' => 'patient/view', 'uses' => 'PatientManagement\PatientManagementController@view'])->middleware('auth','check-permission');
+    // Patient => END
+
+    // Patient => START
+    Route::get('consult/{id}', ['as' => 'consult', 'uses' => 'ConsultManagement\ConsultManagementController@index'])->middleware('auth','check-permission');
+    Route::get('patient/view/{id}', ['as' => 'patient/view', 'uses' => 'PatientManagement\PatientManagementController@view'])->middleware('auth','check-permission');
+    // Patient => END
     
     // Action Logs => START
     Route::get('action-logs', ['as' => 'action-logs', 'uses' => 'ActionLog\ActionLogController@index'])->middleware('auth','check-permission');
