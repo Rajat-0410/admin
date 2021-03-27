@@ -81,9 +81,9 @@
                                         $created_at = Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $row->created_at, 'UTC')->setTimezone('Asia/Kolkata')->format('M d, Y h:i A');
                                     ?>
                                     <tr>
-                                        <td>{{ $row->name }}</td>
-										<td>{{ $row->email }}</td>
-										<td>{{ $row->mobile }}</td>
+                                        <td>{{ $row['user']->name }}</td>
+										<td>{{ $row['user']->email }}</td>
+										<td>{{ $row['user']->mobile }}</td>
                                         <td>{{ $row->created_at }}</td>
                                         <td>
                                             <a href="{!! url('admin/patient/view', ['id' => $id]) !!}" class="btn btn-xs btn-theme" title="View Details" data-toggle="tooltip"><i class="fa fa-eye"></i></a>

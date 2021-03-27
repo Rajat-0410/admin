@@ -83,32 +83,6 @@ class User extends Model
         return $arrResp;
     }
 
-    public function getUserDataWithPatientData($user_id='') {
-        $arrResp    = [];
-        $arrData    = [];
-        $status     = 0;
-        $message    = '';
-        try {
-            $arrData = self::select('id','name', 'mobile', 'email', 'address')
-						->with('patient')
-                        ->where('id','=',$user_id)
-						->where('status','=',1)
-						->where('is_deleted','=',0)
-                        ->first(); 
-            $status = 1;
-            $message = 'success';
-            // print("<pre>"); print_r($arrData); exit('Model');
-        } catch (Exception $ex) {
-            $status = 0;
-            $message = $ex->getMessage();
-        }
-        $arrResp['status'] = $status;
-        $arrResp['message'] = $message;
-        $arrResp['data'] = $arrData;
-        
-        return $arrResp;
-    }
-
     public function addUser() {
         $arrResp    = [];
         $status     = 0;

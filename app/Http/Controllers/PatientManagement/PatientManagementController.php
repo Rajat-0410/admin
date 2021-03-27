@@ -39,21 +39,17 @@ class PatientManagementController extends Controller
         $this->viewData['page_sub_title'] = 'All Patient';
         $input = $request->all();
         $keyword = '';
-        $role_id = config('constant.PATIENT');
+        // $role_id = config('constant.PATIENT');
         if(isset($input['keyword']) && !empty($input['keyword'])){
            $keyword = $input['keyword'];
         }
-		
-		$userData = Session::get('user_data');
-		$roleId = (!empty($userData) ? $userData['role_id']:0);
-		$patient_id = (!empty($userData) ? $userData['id']:0);
         // echo '<pre>'; print_r($patient_id);  exit;
        
         $paginate = config('constant.PAGINATE');
-        $userObj = new User();
-        $arrResp = $userObj->getDataWithPaginate($paginate,$keyword,$role_id);
-        // echo '<pre>'; print_r($arrResp);  exit('controller');
+        $userObj = new Patient();
+        $arrResp = $userObj->getDataWithPaginate($paginate,$keyword);
         $allRecords = $arrResp['data'];
+        // echo '<pre>'; print_r($allRecords);  exit('controller');
 
         $this->viewData['all_records'] = $allRecords;
         $this->viewData['keyword'] = $keyword;
@@ -64,33 +60,18 @@ class PatientManagementController extends Controller
     public function view($id) {
         // Set Page Title
         $this->viewData['page_sub_title'] = 'View Patient Detail';
-        $user_id = User::find(base64_decode($id));
+        $userData = User::find(base64_decode($id));
+        // echo '<pre>'; print_r($userData);  exit('controller');
+        $user_id = $userData->id;
 
         $all_record = [];
         $keyword = '';
         $paginate = 10;
-        $arrMedicalResp = [];
-        $arrConsultResp = [];
 
-        $userObj = new User();
-        $arrPatientResp = $userObj->getUserDataWithPatientData($user_id->id);
-        $all_record['arrPatientResp'] = $arrPatientResp['data'];
-
-        if(isset($arrPatientResp['data']['patient']))
-        {
-            // medical record
-            $patient_id = $arrPatientResp['data']['patient']->id;
-            $medicalRecordObj = new MedicalRecord();
-            $arrMedicalResp = $medicalRecordObj->getDataWithPaginate($paginate,$keyword,$patient_id);
-            $arrMedicalResp = $arrMedicalResp['data'];
-
-            // consult
-            $consultObj = new Consult();
-            $arrConsultResp = $consultObj->getDataWithPaginate($paginate,$keyword,$patient_id);
-            $arrConsultResp = $arrConsultResp['data'];
-        }
-        $all_record['arrMedicalResp'] = $arrMedicalResp;
-        $all_record['arrConsultResp'] = $arrConsultResp;
+        $patientObj = new Patient();
+        $arrPatientResp = $patientObj->getUserDataById($user_id);
+        $all_record = $arrPatientResp['data'];
+        // echo '<pre>'; print_r($all_record['user']->name);  exit;
 
         $this->viewData['all_record'] = $all_record;
         $this->viewData['arr_status'] = config('constant.STATUS');

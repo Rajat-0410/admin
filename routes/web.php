@@ -18,6 +18,53 @@ Route::post('/store-contact-us', ['as' => 'store-contact-us', 'uses' => 'Website
 
 // Route::get('/pages/{slug}', ['as' => 'pages', 'uses' => 'Website\HomeController@commonPage']);
 
+Route::group(['prefix' => 'user'], function () {
+    Route::post('login', ['as' => 'login', 'uses' => 'User\UserController@login']);
+    Route::post('/verify/{id}', 'UserValidateController@verify');
+    
+    Route::middleware(['UserAuth'])->group(function () {
+        // login and register
+        Route::post('/name', 'UserSessionController@name');
+        Route::post('/email', 'UserSessionController@email');
+        Route::post('/logout', 'UserSessionController@signout');
+
+        //working
+        Route::get('/dashboard', 'UserController@dashboard');
+        Route::get('/notification', 'UserNotification@index');
+        Route::delete('/notification/{id}', 'UserNotification@delete');
+
+        //profile
+        Route::patch('/profile', 'UserController@update');
+        Route::get('/profile', 'UserController@show');
+        Route::post('/profile/image', 'UserController@image');
+        
+        Route::get('/disease', 'DiseaseController@index');
+        Route::get('/disease/category/{id}', 'DiseaseCategorieController@index');
+        
+        //medicalrecord
+        Route::get('/medicalrecord', 'UserMedicalRecordController@index');
+        Route::get('/medicalrecord/{id}', 'UserMedicalRecordController@show');
+        Route::post('/medicalrecord', 'UserMedicalRecordController@store');
+        Route::patch('/medicalrecord/{id}', 'UserMedicalRecordController@update');
+        
+        //medicalrecordimage
+        Route::post('/medicalrecordimage/{id}', 'UserMedicalRecordImageController@upload');
+        Route::get('/medicalrecordimage/image/{filename}', 'UserMedicalRecordImageController@showImage');
+
+        //consult
+        Route::post('/consult', 'UserConsultController@store');
+        Route::get('/consult/{id}', 'UserConsultController@show');
+        Route::get('/consult', 'UserConsultController@index');
+        Route::patch('/consult/{id}', 'UserConsultController@update');
+
+        //consult image
+        Route::post('/consultimage/{consult_id}', 'UserConsultImageController@store');
+
+        //payment
+        Route::post('/payment', 'PaymentController@store');
+    });
+});
+
 // Set Admin Routes With Prefix
 Route::prefix('admin')->group(function () {
     // ADMIN

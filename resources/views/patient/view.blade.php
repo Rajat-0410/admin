@@ -33,25 +33,25 @@
                                     <div class="col-md-3">
                                         <div class="form-group has-feedback">
                                             {!! Form::label('name','Name', ['class' => 'required']) !!}
-                                            {!! Form::text('name',$all_record['arrPatientResp']['name'],['class' => 'form-control', 'readonly']) !!}
+                                            {!! Form::text('name',$all_record['user']->name,['class' => 'form-control', 'readonly']) !!}
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group has-feedback">
                                             {!! Form::label('mobile','Mobile', ['class' => 'required']) !!}
-                                            {!! Form::text('mobile',$all_record['arrPatientResp']['mobile'],['class' => 'form-control', 'readonly']) !!}
+                                            {!! Form::text('mobile',$all_record['user']->mobile,['class' => 'form-control', 'readonly']) !!}
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group has-feedback">
                                             {!! Form::label('email','Email', ['class' => 'required']) !!}
-                                            {!! Form::text('email',$all_record['arrPatientResp']['email'],['class' => 'form-control', 'readonly']) !!}
+                                            {!! Form::text('email',$all_record['user']->email,['class' => 'form-control', 'readonly']) !!}
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group has-feedback">
                                             {!! Form::label('occupation','Occupation', ['class' => 'required']) !!}
-                                            {!! Form::text('occupation',$all_record['arrPatientResp']['patient']['occupation'],['class' => 'form-control', 'readonly']) !!}
+                                            {!! Form::text('occupation',$all_record->occupation,['class' => 'form-control', 'readonly']) !!}
                                         </div>
                                     </div>
                                 </div>
@@ -59,25 +59,25 @@
                                     <div class="col-md-3">
                                         <div class="form-group has-feedback">
                                             {!! Form::label('gender','Gender', ['class' => 'required']) !!}
-                                            {!! Form::text('gender',$all_record['arrPatientResp']['patient']['gender'],['class' => 'form-control', 'readonly']) !!}
+                                            {!! Form::text('gender',$all_record->gender,['class' => 'form-control', 'readonly']) !!}
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group has-feedback">
                                             {!! Form::label('dob','Date of Birth', ['class' => 'required']) !!}
-                                            {!! Form::text('dob',$all_record['arrPatientResp']['patient']['dob'],['class' => 'form-control', 'readonly']) !!}
+                                            {!! Form::text('dob',$all_record->dob,['class' => 'form-control', 'readonly']) !!}
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group has-feedback">
                                             {!! Form::label('blood_group','Blood Group', ['class' => 'required']) !!}
-                                            {!! Form::text('blood_group',$all_record['arrPatientResp']['patient']['blood_group'],['class' => 'form-control', 'readonly']) !!}
+                                            {!! Form::text('blood_group',$all_record->blood_group,['class' => 'form-control', 'readonly']) !!}
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group has-feedback">
                                             {!! Form::label('marital_status','Marital Status', ['class' => 'required']) !!}
-                                            {!! Form::text('marital_status',$all_record['arrPatientResp']['patient']['marital_status'],['class' => 'form-control', 'readonly']) !!}
+                                            {!! Form::text('marital_status',$all_record->marital_status,['class' => 'form-control', 'readonly']) !!}
                                         </div>
                                     </div>
                                 </div>
@@ -85,25 +85,25 @@
                                     <div class="col-md-3">
                                         <div class="form-group has-feedback">
                                             {!! Form::label('height','Height', ['class' => 'required']) !!}
-                                            {!! Form::text('height',$all_record['arrPatientResp']['patient']['height'],['class' => 'form-control', 'readonly']) !!}
+                                            {!! Form::text('height',$all_record->height,['class' => 'form-control', 'readonly']) !!}
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group has-feedback">
                                             {!! Form::label('weight','Weight', ['class' => 'required']) !!}
-                                            {!! Form::text('weight',$all_record['arrPatientResp']['patient']['weight'],['class' => 'form-control', 'readonly']) !!}
+                                            {!! Form::text('weight',$all_record->weight,['class' => 'form-control', 'readonly']) !!}
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group has-feedback">
                                             {!! Form::label('smoking','Smoking', ['class' => 'required']) !!}
-                                            {!! Form::text('smoking',$all_record['arrPatientResp']['patient']['smoking'],['class' => 'form-control', 'readonly']) !!}
+                                            {!! Form::text('smoking',$all_record->smoking,['class' => 'form-control', 'readonly']) !!}
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group has-feedback">
                                             {!! Form::label('alcohol','Alcohol', ['class' => 'required']) !!}
-                                            {!! Form::text('alcohol',$all_record['arrPatientResp']['patient']['alcohol'],['class' => 'form-control', 'readonly']) !!}
+                                            {!! Form::text('alcohol',$all_record->alcohol,['class' => 'form-control', 'readonly']) !!}
                                         </div>
                                     </div>
                                 </div>
@@ -111,19 +111,19 @@
                                     <div class="col-md-3">
                                         <div class="form-group has-feedback">
                                             {!! Form::label('daily_routine_work','Daily Routine Work', ['class' => 'required']) !!}
-                                            {!! Form::text('daily_routine_work',$all_record['arrPatientResp']['patient']['daily_routine_work'],['class' => 'form-control', 'readonly']) !!}
+                                            {!! Form::text('daily_routine_work',$all_record->daily_routine_work,['class' => 'form-control', 'readonly']) !!}
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group has-feedback">
                                             {!! Form::label('diet','Diet', ['class' => 'required']) !!}
-                                            {!! Form::text('diet',$all_record['arrPatientResp']['patient']['diet'],['class' => 'form-control', 'readonly']) !!}
+                                            {!! Form::text('diet',$all_record->diet,['class' => 'form-control', 'readonly']) !!}
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group has-feedback">
                                             {!! Form::label('address','Address', ['class' => 'required']) !!}
-                                            {!! Form::text('address',$all_record['arrPatientResp']['address'],['class' => 'form-control', 'readonly']) !!}
+                                            {!! Form::text('address',$all_record['user']->address,['class' => 'form-control', 'readonly']) !!}
                                         </div>
                                     </div>
                                 </div>
@@ -154,7 +154,7 @@
                                     <div class="col-md-12">
                                         <div class="box-body table-responsive pad">
                                             <table class="table table-bordered">
-                                                @if(count($all_record['arrMedicalResp']) > 0)
+                                                @if(count($all_record['medica_record']) > 0)
                                                     <tr>
                                                         <th>Name</th>
                                                         <th>Medical Status</th>
@@ -164,7 +164,7 @@
                                                         <th>Result</th>
                                                         <th>Images</th>
                                                     </tr>
-                                                    @foreach($all_record['arrMedicalResp'] as $row)
+                                                    @foreach($all_record['medica_record'] as $row)
                                                         <?php 
                                                             $id = $row->id;
                                                             // 'Y/m/d H:i A'
@@ -186,10 +186,6 @@
                                                 <tr><td class="text-center" colspan="6"><strong>{{ $no_records_found }}</strong></td></tr>                                
                                                 @endif
                                             </table>
-                                            
-                                            @if(!empty($all_record['arrMedicalResp']))
-                                                {{ $all_record['arrMedicalResp']->links() }}
-                                            @endif
                                             
                                         </div>
                                     </div>
@@ -221,14 +217,14 @@
                                     <div class="col-md-12">
                                         <div class="box-body table-responsive pad">
                                             <table class="table table-bordered">
-                                                @if(count($all_record['arrConsultResp']) > 0)
+                                                @if(count($all_record['consult']) > 0)
                                                     <tr>
                                                         <th>Disease Name</th>
                                                         <th>Disease Type</th>
                                                         <th>Latest Consult</th>
                                                         <th>Details</th>
                                                     </tr>
-                                                    @foreach($all_record['arrConsultResp'] as $row)
+                                                    @foreach($all_record['consult'] as $row)
                                                         <?php 
                                                             $id = base64_encode($row->id);
                                                             // 'Y/m/d H:i A'
@@ -247,10 +243,6 @@
                                                 <tr><td class="text-center" colspan="6"><strong>{{ $no_records_found }}</strong></td></tr>                                
                                                 @endif
                                             </table>
-                                            
-                                            @if(!empty($all_record['arrConsultResp']))
-                                                {{ $all_record['arrConsultResp']->links() }}
-                                            @endif
                                             
                                         </div>
                                     </div>
