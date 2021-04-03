@@ -49,6 +49,30 @@ class User extends Model
         return $arrResp;
     }
 
+    public function getUserDataByToken($token='') {
+        $arrResp    = [];
+        $arrData    = [];
+        $status     = 0;
+        $message    = '';
+        try {
+            $arrData = self::select('id','name','email','mobile','address')
+                        ->with('patient')
+                        ->where('api_token','=',$token)
+                        ->first(); 
+            $status = 1;
+            $message = 'success';
+            // print("<pre>"); print_r($arrData); exit(' State Model');
+        } catch (Exception $ex) {
+            $status = 0;
+            $message = $ex->getMessage();
+        }
+        $arrResp['status'] = $status;
+        $arrResp['message'] = $message;
+        $arrResp['data'] = $arrData;
+        
+        return $arrResp;
+    }
+
     public function getDataWithPaginate($paginate = 10, $searchKeyword = '',$role_id = 0) {
         $arrResp = [];
         $arrData = [];
@@ -89,7 +113,6 @@ class User extends Model
         $message    = '';
         try {
             $userObj = new User();
-
             $userObj->name   	= $this->field['name'];
             $userObj->email  	= $this->field['email'];
             $userObj->password  = $this->field['password'];
@@ -120,13 +143,14 @@ class User extends Model
             $userObj = new User();
             $userObj->id           	= $this->field['id'];
             $userObj->exists       	= true;
-            $userObj->name   		= $this->field['name'];
-            $userObj->email  		= $this->field['email'];
-            $userObj->role_id  		= $this->field['role_id'];
-            $userObj->status    	= $this->field['status'];
-            // $userObj->password   = $this->field['password'];
-            if(!empty($this->field['password'])){
-                $userObj->password = $this->field['password'];
+            if(!empty($this->field['name'])){
+                $userObj->name = $this->field['name'];
+            }
+            if(isset($this->field['marketing'])){
+                $userObj->marketing = $this->field['marketing'];
+            }
+            if(!empty($this->field['email'])){
+                $userObj->email = $this->field['email'];
             }
 
             if($userObj->save()){

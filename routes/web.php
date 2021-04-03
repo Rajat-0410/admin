@@ -12,56 +12,55 @@
 */
 
 Route::get('/', ['as' => 'home', 'uses' => 'Website\HomeController@index']);
-Route::get('/about-us', ['as' => 'about-us', 'uses' => 'Website\HomeController@aboutUs']);
-Route::get('/contact-us', ['as' => 'contact-us', 'uses' => 'Website\HomeController@contactUs']);
-Route::post('/store-contact-us', ['as' => 'store-contact-us', 'uses' => 'Website\HomeController@storeContactUs']);
-
-// Route::get('/pages/{slug}', ['as' => 'pages', 'uses' => 'Website\HomeController@commonPage']);
+Route::get('/term-condition', ['as' => 'term-condition', 'uses' => 'Website\WebsiteCommonController@termCondition']);
+Route::get('/privacy-policy', ['as' => 'privacy-policy', 'uses' => 'Website\WebsiteCommonController@privacyPolicy']);
 
 Route::group(['prefix' => 'user'], function () {
     Route::post('login', ['as' => 'login', 'uses' => 'User\UserController@login']);
-    Route::post('/verify/{id}', 'UserValidateController@verify');
+    Route::post('verify/{id}', ['as' => 'verify', 'uses' => 'User\UserController@verify']);
     
     Route::middleware(['UserAuth'])->group(function () {
         // login and register
-        Route::post('/name', 'UserSessionController@name');
-        Route::post('/email', 'UserSessionController@email');
-        Route::post('/logout', 'UserSessionController@signout');
+        Route::post('name', ['as' => 'name', 'uses' => 'User\UserController@store']);
+        Route::post('email', ['as' => 'email', 'uses' => 'User\UserController@store']);
+        Route::post('logout', ['as' => 'logout', 'uses' => 'User\UserController@logout']);
 
         //working
-        Route::get('/dashboard', 'UserController@dashboard');
-        Route::get('/notification', 'UserNotification@index');
-        Route::delete('/notification/{id}', 'UserNotification@delete');
+        Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'User\UserController@dashboard']);
+        // Route::get('/notification', 'UserNotification@index');
+        // Route::delete('/notification/{id}', 'UserNotification@delete');
 
-        //profile
-        Route::patch('/profile', 'UserController@update');
-        Route::get('/profile', 'UserController@show');
-        Route::post('/profile/image', 'UserController@image');
+        // //profile
+        Route::post('profile', ['as' => 'profile', 'uses' => 'User\UserController@store']);
+        Route::get('profile', ['as' => 'profile', 'uses' => 'User\UserController@profile']);
+        Route::post('profile/image', ['as' => 'profile/image', 'uses' => 'User\UserController@image']);
         
-        Route::get('/disease', 'DiseaseController@index');
-        Route::get('/disease/category/{id}', 'DiseaseCategorieController@index');
+        Route::get('disease', ['as' => 'disease', 'uses' => 'Disease\DiseaseController@index']);
+        Route::get('disease/category/{id}', ['as' => 'disease/category', 'uses' => 'Disease\DiseaseController@index']);
+        // Route::get('/disease', 'DiseaseController@index');
+        // Route::get('/disease/category/{id}', 'DiseaseCategorieController@index');
         
-        //medicalrecord
-        Route::get('/medicalrecord', 'UserMedicalRecordController@index');
-        Route::get('/medicalrecord/{id}', 'UserMedicalRecordController@show');
-        Route::post('/medicalrecord', 'UserMedicalRecordController@store');
-        Route::patch('/medicalrecord/{id}', 'UserMedicalRecordController@update');
+        // //medicalrecord
+        // Route::get('/medicalrecord', 'UserMedicalRecordController@index');
+        // Route::get('/medicalrecord/{id}', 'UserMedicalRecordController@show');
+        // Route::post('/medicalrecord', 'UserMedicalRecordController@store');
+        // Route::patch('/medicalrecord/{id}', 'UserMedicalRecordController@update');
         
-        //medicalrecordimage
-        Route::post('/medicalrecordimage/{id}', 'UserMedicalRecordImageController@upload');
-        Route::get('/medicalrecordimage/image/{filename}', 'UserMedicalRecordImageController@showImage');
+        // //medicalrecordimage
+        // Route::post('/medicalrecordimage/{id}', 'UserMedicalRecordImageController@upload');
+        // Route::get('/medicalrecordimage/image/{filename}', 'UserMedicalRecordImageController@showImage');
 
-        //consult
-        Route::post('/consult', 'UserConsultController@store');
-        Route::get('/consult/{id}', 'UserConsultController@show');
-        Route::get('/consult', 'UserConsultController@index');
-        Route::patch('/consult/{id}', 'UserConsultController@update');
+        // //consult
+        // Route::post('/consult', 'UserConsultController@store');
+        // Route::get('/consult/{id}', 'UserConsultController@show');
+        // Route::get('/consult', 'UserConsultController@index');
+        // Route::patch('/consult/{id}', 'UserConsultController@update');
 
-        //consult image
-        Route::post('/consultimage/{consult_id}', 'UserConsultImageController@store');
+        // //consult image
+        // Route::post('/consultimage/{consult_id}', 'UserConsultImageController@store');
 
-        //payment
-        Route::post('/payment', 'PaymentController@store');
+        // //payment
+        // Route::post('/payment', 'PaymentController@store');
     });
 });
 

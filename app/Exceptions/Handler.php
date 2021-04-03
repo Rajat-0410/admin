@@ -46,6 +46,46 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof ModelNotFoundException)
+        {
+            return response()->json(
+            [
+                'result' => 'error',
+                'error' => [
+                    'code' => 'NOT_FOUND'
+                ]
+            ], Response::HTTP_NOT_FOUND);
+        }
+        if ($exception instanceof NotFoundHttpException)
+        {
+            return response()->json(
+            [
+                'result' => 'error', 
+                'error' => [
+                    'code' => 'URL_NOT_FOUND'
+                ]
+            ], 404);
+        }
+        if ($exception instanceof QueryException) 
+        {
+            return response()->json(
+            [
+                'result' => 'error',
+                'error' => [
+                    'code' => 'The server encountered a temporary error and could not complete your request'
+                ]
+            ], 502);
+        }
+        if ($exception instanceof PDOException) 
+        {
+            return response()->json(
+            [
+                'result' => 'error',
+                'error' => [
+                    'code' => 'SERVER_ERROR'
+                ]
+            ], 500);
+        }
         return parent::render($request, $exception);
     }
 }
