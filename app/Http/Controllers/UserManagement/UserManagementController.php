@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Session;
 use App\Http\Models\User;
+use App\Http\Models\Doctor;
 use App\Http\Models\UserRole;
 use Illuminate\Support\Facades\Hash;
 // use App\Http\Models\Module;
@@ -191,5 +192,74 @@ class UserManagementController extends Controller
         
     }
 
+    public function profile() {
+        // Set Page Title
+        $this->viewData['page_sub_title'] = 'Profile';
+        $user = auth()->user();
+        $doctorObj = new Doctor();
+        $doctorData = $doctorObj->getDoctorDataByUserId($user->id);
+        $doctorData = $doctorData['data'];
+        // echo '<pre>'; print_r($doctorData); exit('controller');
         
+        $this->viewData['id'] = $user->id;
+        $this->viewData['name'] = $user->name;
+        $this->viewData['email'] = $user->email;
+        $this->viewData['mobile'] = $user->mobile;
+        $this->viewData['address'] = $user->address;
+        $this->viewData['father_husband_name'] = $doctorData['father_husband_name'];
+        $this->viewData['spouse_name'] = $doctorData['spouse_name'];
+        $this->viewData['spouse_mobile'] = $doctorData['spouse_mobile'];
+        // echo '<pre>'; print_r($this->viewData); exit;
+        
+        return view('user.profile.edit',$this->viewData);
+    }  
+    
+    public function profileStore(Request $request) {
+        
+        $input = $request->all();
+        // echo '<pre>'; print_r($input);  exit;
+        // Validation => START
+        $checkBox = (isset($input['change_password'])) ? 1 : 0;
+        if(!empty($checkBox)) {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required',
+                'email' => 'required|email',
+                'password' => 'required',
+                'password_confirmation' => 'required|required_with:password|same:password',
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required',
+                'email' => 'required|email',
+            ]);
+        }
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        // Validation => END
+
+        $userObj = new User();
+        $userObj->field['name'] = $input['name'];
+        $userObj->field['email'] = $input['email'];
+        $userObj->field['mobile'] = $input['email'];
+        if(isset($input['password']) && !empty($input['password'])) {
+            $userObj->field['password'] = Hash::make($input['password']);
+        }
+        $arrResp = $userObj->updateUser();
+
+        if($arrResp['status']==1){
+            // True
+            Session::flash('message', "User has been $action sucessfully."); 
+            Session::flash('alert-class', 'alert-success'); 
+            Session::flash('icon-class', 'icon fa fa-check');
+            return redirect('admin/user-management');
+        } else {
+            // False
+            Session::flash('message', 'Unabel to save User, please try again later!'); 
+            Session::flash('alert-class', 'alert-danger'); 
+            Session::flash('icon-class', 'icon fa fa-ban');
+            return redirect('admin/user-management/add');
+        }
+        
+    }
 }

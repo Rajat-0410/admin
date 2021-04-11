@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Models\Consult;
+use App\Http\Models\User;
 
 use Validator, DB;
 
@@ -52,38 +53,29 @@ class ConsultManagementController extends Controller
     public function view($id) {
         // Set Page Title
         $this->viewData['page_sub_title'] = 'View Patient Detail';
-        $user_id = User::find(base64_decode($id));
-
+        $consult_id = base64_decode($id);
+        
         $all_record = [];
         $keyword = '';
         $paginate = 10;
         $arrMedicalResp = [];
         $arrConsultResp = [];
+        
+        $consultObj = new Consult();
+        $consultData = $consultObj->getDataById($consult_id);
+        // $consultData = $consultData['data'];
+        $all_record['arrConsultData'] = $consultData['data'];
+        // echo '<pre>'; print_r($consultData); exit('controller');
 
+        $user_id = $consultData['data']['patient']->user_id;
         $userObj = new User();
-        $arrPatientResp = $userObj->getUserDataWithPatientData($user_id->id);
-        $all_record['arrPatientResp'] = $arrPatientResp['data'];
-
-        if(isset($arrPatientResp['data']['patient']))
-        {
-            // medical record
-            $patient_id = $arrPatientResp['data']['patient']->id;
-            $medicalRecordObj = new MedicalRecord();
-            $arrMedicalResp = $medicalRecordObj->getDataWithPaginate($paginate,$keyword,$patient_id);
-            $arrMedicalResp = $arrMedicalResp['data'];
-
-            // consult
-            $consultObj = new Consult();
-            $arrConsultResp = $consultObj->getDataWithPaginate($paginate,$keyword,$patient_id);
-            $arrConsultResp = $arrConsultResp['data'];
-        }
-        $all_record['arrMedicalResp'] = $arrMedicalResp;
-        $all_record['arrConsultResp'] = $arrConsultResp;
+        $arrUserResp = $userObj->getUserDataById($user_id);
+        $all_record['arrUserData'] = $arrUserResp['data'];
+        // echo '<pre>'; print_r($arrUserResp['data']); exit('controller');
 
         $this->viewData['all_record'] = $all_record;
-        $this->viewData['arr_status'] = config('constant.STATUS');
         $this->viewData['no_records_found'] = config('constant.NO_RECORDS_FOUND');
-        return view('patient.view',$this->viewData);
+        return view('patient.consult.view',$this->viewData);
     }
     
     public function store(Request $request) {

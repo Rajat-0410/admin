@@ -4,24 +4,19 @@ namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class Doctor extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'users';
+    protected $table = 'doctors';
     public $field;
 
-    public function user_role() {
-        return $this->belongsTo('App\Http\Models\UserRole','role_id')
-            ->select('id','role','home_page')
-            ->where('is_deleted', '=' , 0);
-    }
-    public function patient() {
-        return $this->hasOne('App\Http\Models\Patient','user_id')
-			->where('status', '=' , 1)
+    public function user() {
+        return $this->belongsTo('App\Http\Models\User','user_id')
+            ->select('id','name','email','mobile','address')
             ->where('is_deleted', '=' , 0);
     }
     
@@ -31,8 +26,8 @@ class User extends Model
         $status     = 0;
         $message    = '';
         try {
-            $arrData = self::select('id','role_id','name','email','mobile','address')
-                        ->with('user_role')
+            $arrData = self::select('id','user_id','gender','dob','father_husband_name','image_name','image_url','spouse_name','spouse_mobile','status','created_at','updated_at')
+                        ->with('user')
                         ->where('id','=',$id)
                         ->first(); 
             $status = 1;
@@ -49,15 +44,15 @@ class User extends Model
         return $arrResp;
     }
 
-    public function getUserDataByToken($token='') {
+    public function getDoctorDataByUserId($user_id=0) {
         $arrResp    = [];
         $arrData    = [];
         $status     = 0;
         $message    = '';
         try {
-            $arrData = self::select('id','name','email','mobile','address')
-                        ->with('patient')
-                        ->where('api_token','=',$token)
+            $arrData = self::select('id','user_id','gender','dob','father_husband_name','image_name','image_url','spouse_name','spouse_mobile','status','created_at','updated_at')
+                        ->with('user')
+                        ->where('user_id','=',$user_id)
                         ->first(); 
             $status = 1;
             $message = 'success';
@@ -73,27 +68,24 @@ class User extends Model
         return $arrResp;
     }
 
-    public function getDataWithPaginate($paginate = 10, $searchKeyword = '',$role_id = 0) {
+    public function getDataWithPaginate($paginate = 10, $searchKeyword = '') {
         $arrResp = [];
         $arrData = [];
         $status = 0;
         $message = '';
         try {
             $query = self::query();
-            $query->select('id', 'role_id', 'name', 'email','mobile','address','mobile','status','created_at','updated_at');
-            $query->with('user_role');
+            $query->select('id','user_id','gender','dob','father_husband_name','image_name','image_url','spouse_name','spouse_mobile','status','created_at','updated_at');
+            $query->with('user');
             // Search Keyword
             if(!empty($searchKeyword)) {
                 $searchKeywordString = "(name LIKE '%$searchKeyword%' OR email LIKE '%$searchKeyword%' OR mobile LIKE '%$searchKeyword%')";
                 $query->whereRaw($searchKeywordString);
             }
-            if(!empty($role_id)) {
-                $query->Where('role_id', '=', $role_id);
-            }
             $query->where('is_deleted', '=', 0);
             $query->orderBy('created_at', 'desc');
             $arrData = $query->paginate($paginate);            
-            // print("<pre>"); print_r($query->toSql()); exit('modal');
+            // print("<pre>"); print_r($arrData); exit('modal');
             $message = 'Data';
             $status = 1;
         } catch (\Exception $ex) {
@@ -107,16 +99,15 @@ class User extends Model
         return $arrResp;
     }
 
-    public function addUser() {
+    public function addDoctor() {
         $arrResp    = [];
         $status     = 0;
         $message    = '';
         try {
             $userObj = new User();
+
             $userObj->name   	= $this->field['name'];
             $userObj->email  	= $this->field['email'];
-            $userObj->password  = $this->field['password'];
-            $userObj->role_id  	= $this->field['role_id'];
             $userObj->status    = $this->field['status'];
 
             if($userObj->save()){
@@ -135,7 +126,7 @@ class User extends Model
         return $arrResp;
     }
     
-    public function updateUser() {
+    public function updateDoctor() {
         $arrResp    = [];
         $status     = 0;
         $message    = '';
@@ -143,14 +134,13 @@ class User extends Model
             $userObj = new User();
             $userObj->id           	= $this->field['id'];
             $userObj->exists       	= true;
-            if(!empty($this->field['name'])){
-                $userObj->name = $this->field['name'];
-            }
-            if(isset($this->field['marketing'])){
-                $userObj->marketing = $this->field['marketing'];
-            }
-            if(!empty($this->field['email'])){
-                $userObj->email = $this->field['email'];
+            $userObj->name   		= $this->field['name'];
+            $userObj->email  		= $this->field['email'];
+            $userObj->role_id  		= $this->field['role_id'];
+            $userObj->status    	= $this->field['status'];
+            // $userObj->password   = $this->field['password'];
+            if(!empty($this->field['password'])){
+                $userObj->password = $this->field['password'];
             }
 
             if($userObj->save()){
@@ -169,7 +159,7 @@ class User extends Model
         return $arrResp;
     }
 
-    public function deleteUser() {
+    public function deleteDoctor() {
         $arrResp    = [];
         $status     = 0;
         $message    = '';

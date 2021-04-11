@@ -168,8 +168,13 @@ Route::prefix('admin')->group(function () {
 
     // Patient => START
     Route::get('consult/{id}', ['as' => 'consult', 'uses' => 'ConsultManagement\ConsultManagementController@index'])->middleware('auth','check-permission');
-    Route::get('patient/view/{id}', ['as' => 'patient/view', 'uses' => 'PatientManagement\PatientManagementController@view'])->middleware('auth','check-permission');
+    Route::get('consult/view/{id}', ['as' => 'consult/view', 'uses' => 'ConsultManagement\ConsultManagementController@view'])->middleware('auth','check-permission');
     // Patient => END
+
+    // Profile => START
+    Route::get('profile', ['as' => 'profile', 'uses' => 'UserManagement\UserManagementController@profile'])->middleware('auth','check-permission');
+    Route::post('profile/store', ['as' => 'profile/store', 'uses' => 'UserManagement\UserManagementController@profileStore'])->middleware('auth','check-permission');
+    // Profile => END
     
     // Action Logs => START
     Route::get('action-logs', ['as' => 'action-logs', 'uses' => 'ActionLog\ActionLogController@index'])->middleware('auth','check-permission');

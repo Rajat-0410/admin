@@ -235,7 +235,7 @@
                                                             <td>{{ $row->disease_type }}</td>
                                                             <td>{{ $updated_at }}</td>
                                                             <td>
-                                                                <a href="{!! url('admin/consult', ['id' => $id]) !!}" class="btn btn-xs btn-theme text-green" data-toggle="tooltip" title="View Details"><i class="fa fa-eye"></i></a>
+                                                                <a href="{!! url('admin/consult/view', ['id' => $id]) !!}" class="btn btn-xs btn-theme text-green" data-toggle="tooltip" title="View Details"><i class="fa fa-eye"></i></a>
                                                             </td>
                                                         </tr>
                                                     @endforeach

@@ -13,6 +13,12 @@ class Consult extends Model
      */
     protected $table = 'consults';
     public $field;
+
+    public function patient() {
+        return $this->belongsTo('App\Http\Models\Patient','patient_id')
+            ->select('id','user_id','gender','dob','blood_group','marital_status','height','weight','image_name','image_url','smoking','alcohol','daily_routine_work','diet','occupation','status','created_at','updated_at')
+            ->where('is_deleted', '=' , 0);
+    }
     
     public function getDataById($id=0) {
         $arrResp    = [];
@@ -21,6 +27,7 @@ class Consult extends Model
         $message    = '';
         try {
             $arrData = self::select('id','patient_id', 'disease_name','disease_type','symptoms', 'bathing_habit', 'sleep', 'dreams', 'menstrual_history', 'obstetric_history', 'sexual_history', 'family_history', 'blood_pressure', 'pulse_rate', 'temprature', 'appetite', 'thirst', 'addiction', 'thermalReaction', 'perspiration', 'urine', 'stool', 'desire', 'created_at', 'updated_at')
+                        ->with('patient')            
                         ->where('id','=',$id)
                         ->where('status','=',1)
                         ->where('is_deleted','=',0)
