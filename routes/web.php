@@ -35,7 +35,7 @@ Route::group(['prefix' => 'user'], function () {
         Route::get('profile', ['as' => 'profile', 'uses' => 'User\UserController@profile']);
         Route::post('profile/image', ['as' => 'profile/image', 'uses' => 'User\UserController@image']);
         
-        Route::get('disease', ['as' => 'disease', 'uses' => 'Disease\DiseaseController@index']);
+        Route::get('disease', ['as' => 'disease', 'uses' => 'Disease\DiseaseCategorieController@index']);
         Route::get('disease/category/{id}', ['as' => 'disease/category', 'uses' => 'Disease\DiseaseController@index']);
         // Route::get('/disease', 'DiseaseController@index');
         // Route::get('/disease/category/{id}', 'DiseaseCategorieController@index');
@@ -160,6 +160,18 @@ Route::prefix('admin')->group(function () {
     Route::get('user-permission/delete/{id}', ['as' => 'user-permission/delete', 'uses' => 'UserPermission\UserPermissionController@delete'])->middleware('auth','check-permission');
     Route::post('user-permission/store', ['as' => 'user-permission/store', 'uses' => 'UserPermission\UserPermissionController@store'])->middleware('auth','check-permission');
     // User Permission => END
+
+    // Disease => START
+    Route::get('disease-category', ['as' => 'disease-category', 'uses' => 'Disease\DiseaseCategorieController@indexAdminList'])->middleware('auth','check-permission');
+    Route::get('disease-category/add', ['as' => 'disease-category/add', 'uses' => 'Disease\DiseaseCategorieController@add'])->middleware('auth','check-permission');
+    Route::get('disease-category/edit/{id}', ['as' => 'disease-category/edit', 'uses' => 'Disease\DiseaseCategorieController@edit'])->middleware('auth','check-permission');
+    Route::get('disease/delete-category/{id}', ['as' => 'disease-category/delete', 'uses' => 'Disease\DiseaseCategorieController@delete'])->middleware('auth','check-permission');
+    Route::post('disease-category/store', ['as' => 'disease-category/store', 'uses' => 'Disease\DiseaseCategorieController@store'])->middleware('auth','check-permission');
+    
+    Route::get('disease-list/{id}', ['as' => 'disease-list', 'uses' => 'Disease\DiseaseController@indexAdminList'])->middleware('auth','check-permission');
+    Route::get('disease/edit/{id}', ['as' => 'disease/edit', 'uses' => 'Disease\DiseaseController@edit'])->middleware('auth','check-permission');
+    Route::post('disease/store', ['as' => 'disease/store', 'uses' => 'Disease\DiseaseController@store'])->middleware('auth','check-permission');
+    // Disease => END
 
     // Patient => START
     Route::get('patient', ['as' => 'patient', 'uses' => 'PatientManagement\PatientManagementController@index'])->middleware('auth','check-permission');
