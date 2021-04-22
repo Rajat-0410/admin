@@ -1,33 +1,28 @@
 <?php
 
-namespace App\Http\Controllers\ConsultManagement;
+namespace App\Http\Controllers\MedicalRecord;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Models\Consult;
+use App\Http\Models\MedicalRecord;
+use App\Http\Models\MedicalRecordImage;
 use App\Http\Models\User;
 
-use Validator, DB;
+use Validator, DB, Storage, File;
 
 
-class ConsultManagementController extends Controller
+class MedicalRecordController extends Controller
 {
     
     public function __construct() {
         parent::__construct();
-        $this->viewData['page_title'] = 'Consult';
+        $this->viewData['page_title'] = 'Medical Record';
     }
     
-   /*
-     * @Date    : Mar 13, 2021
-     * @Use     : Show Consult listing
-     * @Params  : -
-     * @Cretaed By : Rajat
-     */
-    public function index($id, Request $request) {
+    public function adminIndex($id, Request $request) {
         // Set Page Title
         $patient_id = base64_decode($id);
         $this->viewData['page_sub_title'] = 'All Consult';
@@ -50,18 +45,16 @@ class ConsultManagementController extends Controller
         return view('patient.index',$this->viewData);
     }
 
-    public function allConsultUser(Request $request)
-    {
+    public function index(Request $request) {
         try{
             $token = $request->header()['token'];
             $user = User::where('api_token', $token)->firstorfail();
-            $user_id = $user->id;
-            $consultObj = new Consult();
-            $arrResp = $consultObj->getDataByUserId($user_id);
-            $allRecords = $arrResp['data'];
+            // echo '<pre>'; print_r($user); die('controller');
+            $id = $user->id;
+            $medicalrecord = MedicalRecord::where('user_id',$id)->get();
             return response()->json([
                 'result' => 'success',
-                'data' => $allRecords,
+                'data' => $medicalrecord,
             ], 200);
         } catch (Exception $ex) {
             $status = 0;
@@ -73,20 +66,16 @@ class ConsultManagementController extends Controller
         }
     }
 
-    public function singleConsultUser($id, Request $request)
+    public function medicalRecordSingle($id)
     {
         try{
-            $token = $request->header()['token'];
-            $user = User::where('api_token', $token)->firstorfail();
-            $user_id = $user->id;
-
-            $view_with = 'yes';
-            $consultObj = new Consult();
-            $arrResp = $consultObj->getDataById($id, $view_with);
-            $allRecords = $arrResp['data'];
+            $medicalRecordObj = new MedicalRecord();
+            $allRecordArr = $medicalRecordObj->getMedicalDataById($id);
+            $allRecordData = $allRecordArr['data'];
+            // echo '<pre>'; print_r($allRecordData); exit('controller');
             return response()->json([
                 'result' => 'success',
-                'data' => $allRecords,
+                'data' => $allRecordData,
             ], 200);
         } catch (Exception $ex) {
             $status = 0;
@@ -137,22 +126,42 @@ class ConsultManagementController extends Controller
             $id = !empty($input['id']) ? $input['id'] : 0;
             // Validation => START
             $checkId = (isset($input['id'])) ? 1 : 0;
-            if(empty($checkId)) {
+            if(!empty($checkId)) {
                 $messages = [
-                    'disease_name.required' => 'DISEASE_NAME_REQUIRED',
-                    'disease_type.required' => 'DISEASE_TYPE_REQUIRED',
-                    'symptoms.required' => 'SYMPTOMS_REQUIRED',
+                    'medical_status.in' => 'INVALID_INPUT_TYPE',
+                    'time_from.date_format' => 'INVALID_INPUT_TYPE',
+                    'time_to.date_format' => 'INVALID_INPUT_TYPE',
                 ];
                 $validator = Validator::make($request->all(), [
-                    'disease_name' => 'required',
-                    'disease_type' => 'required',
-                    'symptoms' => 'required',
+                    'medical_status' => 'in:past,ongoing',
+                    'time_from' => 'date_format:Y-m-d',
+                    'time_to' => 'date_format:Y-m-d',
                 ], $messages);
-                if ($validator->fails()) {
-                    return response()->json([
-                        'error' => $validator->errors(),
-                    ],400);
-                }
+            } else {
+                $messages = [
+                    'name.required' => 'NAME_REQUIRED',
+                    'status.required' => 'STATUS_REQUIRED',
+                    'medical_status.in' => 'STATUS_INVALID_INPUT',
+                    'type.required' => 'TYPE_REQUIRED',
+                    'time_from.required' => 'DATE_REQUIRED',
+                    'time_from.date_format' => 'DATE_INPUT_INVALID',
+                    'time_to.date_format' => 'DATE_INPUT_INVALID',
+                    'result.required' => 'RESULT_REQUIRED',
+                ];
+                $validator = Validator::make($request->all(), [
+                    'name' => 'required',
+                    'medical_status' => 'required|in:past,ongoing',
+                    'type' => 'required',
+                    'type' => 'required',
+                    'time_from' => 'required|date_format:Y-m-d',
+                    'time_to' => 'date_format:Y-m-d',
+                    'result' => 'required',
+                ], $messages);
+            }
+            if ($validator->fails()) {
+                return response()->json([
+                    'error' => $validator->errors(),
+                ],400);
             }
             // Validation => END
 
@@ -162,81 +171,29 @@ class ConsultManagementController extends Controller
             // Action
             $isUpdate = (isset($input['id']) && !empty($input['id'])) ? true:false;
             // New Menu Object
-            $consultObj = new Consult();
+            $medicalRecordObj = new MedicalRecord();
             // Pass Data To Model
             if($isUpdate){
                 // If Update True Pass Data To Model
-                $consultObj->field['id'] = $input['id'];
+                $medicalRecordObj->field['id'] = $input['id'];
                 $action = 'updated';
             }
             
-            $consultObj->field['user_id'] = $user_id;
-            $consultObj->field['disease_name'] = $input['disease_name'];
-            $consultObj->field['disease_type'] = $input['disease_type'];
-            if(!empty($input['symptoms'])){
-                $consultObj->field['symptoms'] = $input['symptoms'];
-            }
-            if(!empty($input['bathing_habit'])){
-                $consultObj->field['bathing_habit'] = $input['bathing_habit'];
-            }
-            if(!empty($input['sleep'])){
-                $consultObj->field['sleep'] = $input['sleep'];
-            }
-            if(!empty($input['dreams'])){
-                $consultObj->field['dreams'] = $input['dreams'];
-            }
-            if(!empty($input['menstrual_history'])){
-                $consultObj->field['menstrual_history'] = $input['menstrual_history'];
-            }
-            if(!empty($input['obstetric_history'])){
-                $consultObj->field['obstetric_history'] = $input['obstetric_history'];
-            }
-            if(!empty($input['sexual_history'])){
-                $consultObj->field['sexual_history'] = $input['sexual_history'];
-            }
-            if(!empty($input['family_history'])){
-                $consultObj->field['family_history'] = $input['family_history'];
-            }
-            if(!empty($input['blood_pressure'])){
-                $consultObj->field['blood_pressure'] = $input['blood_pressure'];
-            }
-            if(!empty($input['pulse_rate'])){
-                $consultObj->field['pulse_rate'] = $input['pulse_rate'];
-            }
-            if(!empty($input['temprature'])){
-                $consultObj->field['temprature'] = $input['temprature'];
-            }
-            if(!empty($input['appetite'])){
-                $consultObj->field['appetite'] = $input['appetite'];
-            }
-            if(!empty($input['thirst'])){
-                $consultObj->field['thirst'] = $input['thirst'];
-            }
-            if(!empty($input['addiction'])){
-                $consultObj->field['addiction'] = $input['addiction'];
-            }
-            if(!empty($input['thermalReaction'])){
-                $consultObj->field['thermalReaction'] = $input['thermalReaction'];
-            }
-            if(!empty($input['perspiration'])){
-                $consultObj->field['perspiration'] = $input['perspiration'];
-            }
-            if(!empty($input['urine'])){
-                $consultObj->field['urine'] = $input['urine'];
-            }
-            if(!empty($input['stool'])){
-                $consultObj->field['stool'] = $input['stool'];
-            }
-            if(!empty($input['desire'])){
-                $consultObj->field['desire'] = $input['desire'];
-            }
+            $medicalRecordObj->field['user_id'] = $user_id;
+            $medicalRecordObj->field['name'] = $input['name'];
+            $medicalRecordObj->field['medical_status'] = $input['medical_status'];
+            $medicalRecordObj->field['type'] = $input['type'];
+            $medicalRecordObj->field['time_from'] = $input['time_from'];
+            $medicalRecordObj->field['time_to'] = $input['time_to'];
+            $medicalRecordObj->field['result'] = $input['result'];
+            // $medicalRecordObj->field['status'] = $input['status'];
             
             if($isUpdate){
                 // If Update
-                $arrResp = $consultObj->updateConsult();
+                $arrResp = $medicalRecordObj->updateMedicalRecord();
             } else {
                 // If Add
-                $arrResp = $consultObj->addConsult();
+                $arrResp = $medicalRecordObj->addMedicalRecord();
             }
             
             if($arrResp['status']==1){
@@ -262,7 +219,7 @@ class ConsultManagementController extends Controller
                 'result' => 'error',
                 'message' => 'SERVER_ERROR'
             ],400);
-        }        
+        }
     }
     
     public function delete($id) {
@@ -286,30 +243,31 @@ class ConsultManagementController extends Controller
             Session::flash('alert-class', 'alert-danger'); 
             Session::flash('icon-class', 'icon fa fa-ban');
             return redirect('admin/employee-management');
-        }        
+        }
+        
     }
-
-    public function uploadImage(Request $request, $consult_id=0)
+    
+    public function uploadImage(Request $request, $id=0)
     {
         try{
-            if(empty($consult_id)){
+            if(empty($id)){
                 return response()->json([
                     'result' => 'error',
-                    "message" => "CONSULT_ID_MISSING"
+                    "message" => "MEDICAL_RECORD_ID_MISSING"
                 ], 404);
             }
 
-            $consultArr = Consult::where('id', $consult_id)->first();
-            if (!empty($consultArr))
+            $medicalrecord = MedicalRecord::where('id', $id)->first();
+            if (!empty($medicalrecord))
             {
-                $disease_name = $consultArr->disease_name;
-                $user_id = $consultArr->user_id;
+                $title = $medicalrecord->title;
+                $user_id = $medicalrecord->user_id;
                 // echo '<pre>'; print_r($user_id); die('controller');
 
                 if($request->has('image'))
                 {
                     // Create Directories (SELF)
-                    $pathOriginal = public_path().'/uploads/consult-images/';
+                    $pathOriginal = public_path().'/uploads/medica-record-images/';
                     if(!File::exists($pathOriginal)) {
                         // If Not Exist
                         File::makeDirectory($pathOriginal, $mode = 0777, true, true);
@@ -317,32 +275,33 @@ class ConsultManagementController extends Controller
 
                     $file_data = $request->image;
                     $file = base64_decode($file_data);
-                    $file_name = $user_id . '_' . $consult_id . '_' . $name . '_' . time() . '.png'; //creating new name to save
+                    $file_name = $user_id . '_' . $id . '_' . $title . '_' . time() . '.png'; //creating new name to save
                     $size_in_bytes = (int) (strlen(rtrim($file_data, '=')) * 3 / 4);
                     $size = $size_in_bytes / 1024;
 
                     // PUBLIC => START
-                    // $destinationPath = public_path("/uploads/consult-images/");
+                    // $destinationPath = public_path("/uploads/medica-record-images/");
                     // $file->move($destinationPath, $file_name);
                     // PUBLIC => END
 
                     // S3 => START
 
-                    Storage::disk('s3')->put('consult-images/'.$file_name, $file, 'public');
-                    $url = Storage::disk('s3')->url('consult-images/'.$file_name);
+                    Storage::disk('s3')->put('medica-record-images/'.$file_name, $file, 'public');
+                    $url = Storage::disk('s3')->url('medica-record-images/'.$file_name);
                     // S3 => START
 
-                    $consultimage = new ConsultImage;
-                    $consultimage->consult_id = $consult_id;
-                    $consultimage->name = $file_name;
-                    $consultimage->size = $size;
-                    $consultimage->image_url = $url;
+                    $medicalrecordimage = new MedicalRecordImage;
+                    $medicalrecordimage->medical_record_id = $id;
+                    $medicalrecordimage->image_name = $file_name;
+                    $medicalrecordimage->image_url = $url;
+                    $medicalrecordimage->size = $size;
+                    // $medicalrecordimage->save();
 
-                    if($consultimage->save())
+                    if($medicalrecordimage->save())
                     {
                         return response()->json([
                             "result" => "Success",
-                            'data' => $consultimage,
+                            'data' => $medicalrecordimage,
                         ], 200); 
                     } else {
                         return response()->json([
@@ -364,9 +323,32 @@ class ConsultManagementController extends Controller
             {
                 return response()->json([
                     'result' => 'error',
-                    "message" => "CONSULT_NOT_FOUND"
+                    "message" => "MEDICAL_RECORD_NOT_FOUND"
                 ], 404);
             }
+        } catch (Exception $ex) {
+            $status = 0;
+            $message = $ex->getMessage();
+            return response()->json([
+                'result' => 'error',
+                'message' => 'SERVER_ERROR',
+                'error' => $message
+            ],400);
+        }
+    }
+
+    public function showImage($filename)
+    {
+        try{
+            if(empty($filename)){
+                return response()->json([
+                    'result' => 'error',
+                    "message" => "FILE_NAME_MISSING"
+                ], 404);
+            }
+
+            return Storage::disk('s3')->response('medica-record-images/',$filename);
+            
         } catch (Exception $ex) {
             $status = 0;
             $message = $ex->getMessage();

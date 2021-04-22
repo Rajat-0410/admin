@@ -13,6 +13,12 @@ class MedicalRecord extends Model
      */
     protected $table = 'medical_records';
     public $field;
+
+    public function medical_record_image() {
+        return $this->hasMany('App\Http\Models\MedicalRecordImage','medical_record_id','id')
+            ->select('id','medical_record_id','image_name','image_url','status','created_at','updated_at')
+            ->where('is_deleted', '=' , 0);
+    }
     
     public function getMedicalDataById($id=0) {
         $arrResp    = [];
@@ -20,7 +26,8 @@ class MedicalRecord extends Model
         $status     = 0;
         $message    = '';
         try {
-            $arrData = self::select('id','patient_id', 'title','medical_status','type', 'time_from', 'time_to', 'result', 'updated_at')
+            $arrData = self::select('id','user_id', 'title','medical_status','type', 'time_from', 'time_to', 'result', 'created_at','updated_at')
+                        ->with('medical_record_image')
                         ->where('id','=',$id)
                         ->where('status','=',1)
                         ->where('is_deleted','=',0)
@@ -46,7 +53,7 @@ class MedicalRecord extends Model
         $message = '';
         try {
             $query = self::query();
-            $query->select('id','patient_id', 'title','medical_status','type', 'time_from', 'time_to', 'result', 'updated_at');
+            $query->select('id','user_id', 'title','medical_status','type', 'time_from', 'time_to', 'result', 'updated_at');
             // $query->with('user');
             // Search Keyword
             if(!empty($searchKeyword)) {
@@ -75,24 +82,26 @@ class MedicalRecord extends Model
         $status     = 0;
         $message    = '';
         try {
-            $userObj = new User();
+            $medicalRecordObj = new MedicalRecord();
 
-            $userObj->name   	= $this->field['name'];
-            $userObj->email  	= $this->field['email'];
-            $userObj->password  = $this->field['password'];
-            $userObj->role_id  	= $this->field['role_id'];
-            $userObj->status    = $this->field['status'];
+            $medicalRecordObj->user_id          = $this->field['user_id'];
+            $medicalRecordObj->title   	        = $this->field['name'];
+            $medicalRecordObj->medical_status  	= $this->field['medical_status'];
+            $medicalRecordObj->type             = $this->field['type'];
+            $medicalRecordObj->time_from  	    = $this->field['time_from'];
+            $medicalRecordObj->time_to          = $this->field['time_to'];
+            $medicalRecordObj->result           = $this->field['result'];
 
-            if($userObj->save()){
-                $message = 'User addded successfully.';
+            if($medicalRecordObj->save()){
+                $message = 'Medical Record addded successfully.';
                 $status = 1;
             } else {
                 $status = 0;
-                $message = 'Unabel to add user, please try again later!';
+                $message = 'Unabel to add Medical Record, please try again later!';
             }
         } catch (\Exception $ex) {
             $status = 0;
-            $message = $ex->getMessage();
+            echo $message = $ex->getMessage();
         }
         $arrResp['status'] = $status;
         $arrResp['message'] = $message;
@@ -104,24 +113,34 @@ class MedicalRecord extends Model
         $status     = 0;
         $message    = '';
         try {
-            $userObj = new User();
-            $userObj->id           	= $this->field['id'];
-            $userObj->exists       	= true;
-            $userObj->name   		= $this->field['name'];
-            $userObj->email  		= $this->field['email'];
-            $userObj->role_id  		= $this->field['role_id'];
-            $userObj->status    	= $this->field['status'];
-            // $userObj->password   = $this->field['password'];
-            if(!empty($this->field['password'])){
-                $userObj->password = $this->field['password'];
+            $medicalRecordObj = new MedicalRecord();
+            $medicalRecordObj->id           = $this->field['id'];
+            $medicalRecordObj->exists       = true;
+            if(!empty($this->field['name'])){
+                $medicalRecordObj->title = $this->field['name'];
+            }
+            if(!empty($this->field['medical_status'])){
+                $medicalRecordObj->medical_status = $this->field['medical_status'];
+            }
+            if(!empty($this->field['type'])){
+                $medicalRecordObj->type = $this->field['type'];
+            }
+            if(!empty($this->field['time_from'])){
+                $medicalRecordObj->time_from = $this->field['time_from'];
+            }
+            if(!empty($this->field['time_to'])){
+                $medicalRecordObj->time_to = $this->field['time_to'];
+            }
+            if(!empty($this->field['result'])){
+                $medicalRecordObj->result = $this->field['result'];
             }
 
-            if($userObj->save()){
-                $message = 'User updated successfully.';
+            if($medicalRecordObj->save()){
+                $message = 'Medical Record updated successfully.';
                 $status = 1;
             } else {
                 $status = 0;
-                $message = 'Unabel to update user, please try again later!';
+                $message = 'Unabel to update Medical Record, please try again later!';
             }
         } catch (\Exception $ex) {
             $status = 0;
@@ -137,16 +156,16 @@ class MedicalRecord extends Model
         $status     = 0;
         $message    = '';
         try {
-            $userObj = new User();
-            $userObj->id           = $this->field['id'];
-            $userObj->exists       = true;
-            $userObj->is_deleted   = 1;
-            if($userObj->save()){
-                $message = 'User deleted successfully.';
+            $medicalRecordObj = new MedicalRecord();
+            $medicalRecordObj->id           = $this->field['id'];
+            $medicalRecordObj->exists       = true;
+            $medicalRecordObj->is_deleted   = 1;
+            if($medicalRecordObj->save()){
+                $message = 'Medical Record deleted successfully.';
                 $status = 1;
             } else {
                 $status = 0;
-                $message = 'Unabel to delete user, please try again later!';
+                $message = 'Unabel to delete Medical Record, please try again later!';
             }
         } catch (\Exception $ex) {
             $status = 0;

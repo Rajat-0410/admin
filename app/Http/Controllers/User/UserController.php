@@ -10,6 +10,7 @@ use App\Http\Models\User;
 use App\Http\Models\Advertisement;
 use App\Http\Models\StaticText;
 use App\Http\Models\Patient;
+use App\Http\Models\MedicalRecord;
 
 use Validator, DB;
 
@@ -264,16 +265,12 @@ class UserController extends Controller
             }
             // Validation => END
 
-            // Initialize Variables
-            $arrResp = [];
-            $action = 'added';
-
             // Action
             $token = $request->header()['token'];
             $user = User::where('api_token', $token)->firstorfail();
             $userId = $user->id;
             
-            // New Object
+            // New Object for user
             $userObj = new User();
             // Pass Data To Model
             $userObj->field['id'] = $userId;
@@ -288,6 +285,7 @@ class UserController extends Controller
             }
             $arrResp = $userObj->updateUser();
 
+            // New Object for Patient
             $patientObj = new Patient();
             $input = [];
             if ($request->has('gender')) 
@@ -494,24 +492,46 @@ class UserController extends Controller
 
             if($request->has('image'))
             {
+                // Create Directories (SELF)
+                $pathOriginal = public_path().'/uploads/profileimage/';
+                if(!File::exists($pathOriginal)) {
+                    // If Not Exist
+                    File::makeDirectory($pathOriginal, $mode = 0777, true, true);
+                }
+
                 $file_data = $request->image;
                 $file = base64_decode($file_data);
                 $file_name = $id . '_' . $name . '_' . time() . '.png'; //creating new name to save
                 Storage::disk('s3')->put('profileimage/'.$file_name, $file, 'public');
                 $url = Storage::disk('s3')->url('profileimage/'.$file_name);
+
+                // PUBLIC => START
+                // $destinationPath = public_path("/uploads/profileimage/");
+                // $file->move($destinationPath, $file_name);
+                // PUBLIC => END
+
+                $user->image_name = $file_name;
+                $user->image_url = $url;
+                // $user->save();
+
+                if($user->save())
+                {
+                    return response()->json([
+                        "result" => "Success",
+                        'data' => $user,
+                    ], 200); 
+                } else {
+                    return response()->json([
+                        'result' => 'error',
+                        "message" => "UNABLE_TO_UPLOAD_PLEASE_TRY_AFTER_SOMETIME!"
+                    ], 404);
+                }
             } else {
                 return response()->json([
                     'result' => 'error',
                     'error' => 'NO_FILE_SELECTED',
                 ]);
             }
-            $user->image_name = $file_name;
-            $user->image_url = $url;
-            $user->save();
-            return response()->json([
-                "result" => "Success",
-                'data' => array(),
-            ], 200); 
         } catch (Exception $ex) {
             $status = 0;
             $message = $ex->getMessage();

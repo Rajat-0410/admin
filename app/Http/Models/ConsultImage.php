@@ -4,43 +4,26 @@ namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Patient extends Model
+class ConsultImage extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'patient';
+    protected $table = 'consult_images';
     public $field;
-
-    public function user() {
-        return $this->belongsTo('App\Http\Models\User','user_id')
-            ->select('id','name','email','mobile','address')
-            ->where('is_deleted', '=' , 0);
-    }
-    public function medica_record() {
-        return $this->hasMany('App\Http\Models\MedicalRecord','user_id','id')
-            ->select('id','user_id','title','medical_status','type','time_from','time_to','result','status','created_at','updated_at')
-            ->where('is_deleted', '=' , 0);
-    }
-    public function consult() {
-        return $this->hasMany('App\Http\Models\Consult','user_id','id')
-            ->select('id','user_id','disease_name','disease_type','symptoms','bathing_habit','sleep','created_at','updated_at')
-            ->where('is_deleted', '=' , 0);
-    }
     
-    public function getUserDataById($id=0) {
+    public function getConsultImageDataById($id=0) {
         $arrResp    = [];
         $arrData    = [];
         $status     = 0;
         $message    = '';
         try {
-            $arrData = self::select('id','user_id','gender','dob','blood_group','marital_status','height','weight','image_name','image_url','smoking','alcohol','daily_routine_work','diet','occupation','status','created_at','updated_at')
-                        ->with('user')
-                        ->with('medica_record')
-                        ->with('consult')
+            $arrData = self::select('id','medical_record_id', 'image_name', 'image_url' , 'updated_at')
                         ->where('id','=',$id)
+                        ->where('status','=',1)
+                        ->where('is_deleted','=',0)
                         ->first(); 
             $status = 1;
             $message = 'success';
@@ -56,44 +39,14 @@ class Patient extends Model
         return $arrResp;
     }
 
-    public function getUserDataByUserId($user_id=0) {
-        $arrResp    = [];
-        $arrData    = [];
-        $status     = 0;
-        $message    = '';
-        try {
-            $arrData = self::select('id','user_id','gender','dob','blood_group','marital_status','height','weight','image_name','image_url','smoking','alcohol','daily_routine_work','diet','occupation','status','created_at','updated_at')
-                        ->with('user')
-                        ->where('user_id','=',$user_id)
-                        ->first(); 
-            $status = 1;
-            $message = 'success';
-            // print("<pre>"); print_r($arrData); exit(' State Model');
-        } catch (Exception $ex) {
-            $status = 0;
-            $message = $ex->getMessage();
-        }
-        $arrResp['status'] = $status;
-        $arrResp['message'] = $message;
-        $arrResp['data'] = $arrData;
-        
-        return $arrResp;
-    }
-
-    public function getDataWithPaginate($paginate = 10, $searchKeyword = '') {
+    public function getDataWithPaginate($paginate = 10, $searchKeyword = '',$patient_id = 0) {
         $arrResp = [];
         $arrData = [];
         $status = 0;
         $message = '';
         try {
             $query = self::query();
-            $query->select('id','user_id','gender','dob','blood_group','marital_status','status','created_at','updated_at');
-            $query->with('user');
-            // Search Keyword
-            if(!empty($searchKeyword)) {
-                $searchKeywordString = "(name LIKE '%$searchKeyword%' OR email LIKE '%$searchKeyword%' OR mobile LIKE '%$searchKeyword%')";
-                $query->whereRaw($searchKeywordString);
-            }
+            $query->select('id','medical_record_id', 'image_name', 'image_url' , 'updated_at');
             $query->where('is_deleted', '=', 0);
             $query->orderBy('created_at', 'desc');
             $arrData = $query->paginate($paginate);            
@@ -111,7 +64,7 @@ class Patient extends Model
         return $arrResp;
     }
 
-    public function addPatient() {
+    public function addConsultImage() {
         $arrResp    = [];
         $status     = 0;
         $message    = '';
@@ -140,7 +93,7 @@ class Patient extends Model
         return $arrResp;
     }
     
-    public function updateUser() {
+    public function updateConsultImage() {
         $arrResp    = [];
         $status     = 0;
         $message    = '';
@@ -173,7 +126,7 @@ class Patient extends Model
         return $arrResp;
     }
 
-    public function deleteUser() {
+    public function deleteMedicalRecord() {
         $arrResp    = [];
         $status     = 0;
         $message    = '';

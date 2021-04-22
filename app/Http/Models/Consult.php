@@ -15,23 +15,61 @@ class Consult extends Model
     public $field;
 
     public function patient() {
-        return $this->belongsTo('App\Http\Models\Patient','patient_id')
+        return $this->belongsTo('App\Http\Models\Patient','user_id')
             ->select('id','user_id','gender','dob','blood_group','marital_status','height','weight','image_name','image_url','smoking','alcohol','daily_routine_work','diet','occupation','status','created_at','updated_at')
             ->where('is_deleted', '=' , 0);
     }
+
+    public function consult_image() {
+        return $this->hasMany('App\Http\Models\ConsultImage','consult_id','id')
+            ->select('id','consult_id','image_name','image_url','size','status','created_at','updated_at')
+            ->where('is_deleted', '=' , 0);
+    }
     
-    public function getDataById($id=0) {
+    public function getDataById($id=0, $view_with='') {
         $arrResp    = [];
         $arrData    = [];
         $status     = 0;
         $message    = '';
         try {
-            $arrData = self::select('id','patient_id', 'disease_name','disease_type','symptoms', 'bathing_habit', 'sleep', 'dreams', 'menstrual_history', 'obstetric_history', 'sexual_history', 'family_history', 'blood_pressure', 'pulse_rate', 'temprature', 'appetite', 'thirst', 'addiction', 'thermalReaction', 'perspiration', 'urine', 'stool', 'desire', 'created_at', 'updated_at')
-                        ->with('patient')            
-                        ->where('id','=',$id)
+            $query = self::query();
+            $query->select('id','user_id', 'disease_name','disease_type','symptoms', 'bathing_habit', 'sleep', 'dreams', 'menstrual_history', 'obstetric_history', 'sexual_history', 'family_history', 'blood_pressure', 'pulse_rate', 'temprature', 'appetite', 'thirst', 'addiction', 'thermalReaction', 'perspiration', 'urine', 'stool', 'desire', 'created_at', 'updated_at');
+            // Search Keyword
+            if(empty($view_with)) {
+                $query->with('patient');
+            }
+            $query->with('consult_image');
+            $query->where('id', '=', $id);
+            $query->where('status', '=', 1);
+            $query->where('is_deleted', '=', 0);
+            $query->orderBy('created_at', 'desc');
+            $arrData = $query->first();  
+
+            $status = 1;
+            $message = 'success';
+            // print("<pre>"); print_r($arrData); exit(' State Model');
+        } catch (Exception $ex) {
+            $status = 0;
+            $message = $ex->getMessage();
+        }
+        $arrResp['status'] = $status;
+        $arrResp['message'] = $message;
+        $arrResp['data'] = $arrData;
+        
+        return $arrResp;
+    }
+
+    public function getDataByUserId($user_id=0) {
+        $arrResp    = [];
+        $arrData    = [];
+        $status     = 0;
+        $message    = '';
+        try {
+            $arrData = self::select('id','user_id', 'disease_name','disease_type','symptoms', 'bathing_habit', 'sleep', 'dreams', 'menstrual_history', 'obstetric_history', 'sexual_history', 'family_history', 'blood_pressure', 'pulse_rate', 'temprature', 'appetite', 'thirst', 'addiction', 'thermalReaction', 'perspiration', 'urine', 'stool', 'desire', 'created_at', 'updated_at')
+                        ->where('user_id','=',$user_id)
                         ->where('status','=',1)
                         ->where('is_deleted','=',0)
-                        ->first(); 
+                        ->get(); 
             $status = 1;
             $message = 'success';
             // print("<pre>"); print_r($arrData); exit(' State Model');
@@ -82,20 +120,75 @@ class Consult extends Model
         $status     = 0;
         $message    = '';
         try {
-            $userObj = new User();
+            $consultObj = new Consult();
 
-            $userObj->name   	= $this->field['name'];
-            $userObj->email  	= $this->field['email'];
-            $userObj->password  = $this->field['password'];
-            $userObj->role_id  	= $this->field['role_id'];
-            $userObj->status    = $this->field['status'];
+            $consultObj->user_id   	    = $this->field['user_id'];
+            $consultObj->disease_name   = $this->field['disease_name'];
+            $consultObj->disease_type   = $this->field['disease_type'];
+            if(!empty($this->field['symptoms'])){
+                $consultObj->symptoms = $this->field['symptoms'];
+            }
+            if(!empty($this->field['bathing_habit'])){
+                $consultObj->bathing_habit = $this->field['bathing_habit'];
+            }
+            if(!empty($this->field['sleep'])){
+                $consultObj->sleep = $this->field['sleep'];
+            }
+            if(!empty($this->field['dreams'])){
+                $consultObj->dreams = $this->field['dreams'];
+            }
+            if(!empty($this->field['menstrual_history'])){
+                $consultObj->menstrual_history = $this->field['menstrual_history'];
+            }
+            if(!empty($this->field['obstetric_history'])){
+                $consultObj->obstetric_history = $this->field['obstetric_history'];
+            }
+            if(!empty($this->field['sexual_history'])){
+                $consultObj->sexual_history = $this->field['sexual_history'];
+            }
+            if(!empty($this->field['family_history'])){
+                $consultObj->family_history = $this->field['family_history'];
+            }
+            if(!empty($this->field['blood_pressure'])){
+                $consultObj->blood_pressure = $this->field['blood_pressure'];
+            }
+            if(!empty($this->field['pulse_rate'])){
+                $consultObj->pulse_rate = $this->field['pulse_rate'];
+            }
+            if(!empty($this->field['temprature'])){
+                $consultObj->temprature = $this->field['temprature'];
+            }
+            if(!empty($this->field['appetite'])){
+                $consultObj->appetite = $this->field['appetite'];
+            }
+            if(!empty($this->field['thirst'])){
+                $consultObj->thirst = $this->field['thirst'];
+            }
+            if(!empty($this->field['addiction'])){
+                $consultObj->addiction = $this->field['addiction'];
+            }
+            if(!empty($this->field['thermalReaction'])){
+                $consultObj->thermalReaction = $this->field['thermalReaction'];
+            }
+            if(!empty($this->field['perspiration'])){
+                $consultObj->perspiration = $this->field['perspiration'];
+            }
+            if(!empty($this->field['urine'])){
+                $consultObj->urine = $this->field['urine'];
+            }
+            if(!empty($this->field['stool'])){
+                $consultObj->stool = $this->field['stool'];
+            }
+            if(!empty($this->field['desire'])){
+                $consultObj->desire = $this->field['desire'];
+            }
 
-            if($userObj->save()){
-                $message = 'User addded successfully.';
+            if($consultObj->save()){
+                $message = 'Consult addded successfully.';
                 $status = 1;
             } else {
                 $status = 0;
-                $message = 'Unabel to add user, please try again later!';
+                $message = 'Unabel to add Consult, please try again later!';
             }
         } catch (\Exception $ex) {
             $status = 0;
@@ -111,24 +204,79 @@ class Consult extends Model
         $status     = 0;
         $message    = '';
         try {
-            $userObj = new User();
-            $userObj->id           	= $this->field['id'];
-            $userObj->exists       	= true;
-            $userObj->name   		= $this->field['name'];
-            $userObj->email  		= $this->field['email'];
-            $userObj->role_id  		= $this->field['role_id'];
-            $userObj->status    	= $this->field['status'];
-            // $userObj->password   = $this->field['password'];
-            if(!empty($this->field['password'])){
-                $userObj->password = $this->field['password'];
+            $consultObj = new Consult();
+            $consultObj->id           	= $this->field['id'];
+            $consultObj->exists       	= true;
+            if(!empty($this->field['disease_name'])){
+                $consultObj->disease_name = $this->field['disease_name'];
+            }
+            if(!empty($this->field['disease_type'])){
+                $consultObj->disease_type = $this->field['disease_type'];
+            }
+            if(!empty($this->field['symptoms'])){
+                $consultObj->symptoms = $this->field['symptoms'];
+            }
+            if(!empty($this->field['bathing_habit'])){
+                $consultObj->bathing_habit = $this->field['bathing_habit'];
+            }
+            if(!empty($this->field['sleep'])){
+                $consultObj->sleep = $this->field['sleep'];
+            }
+            if(!empty($this->field['dreams'])){
+                $consultObj->dreams = $this->field['dreams'];
+            }
+            if(!empty($this->field['menstrual_history'])){
+                $consultObj->menstrual_history = $this->field['menstrual_history'];
+            }
+            if(!empty($this->field['obstetric_history'])){
+                $consultObj->obstetric_history = $this->field['obstetric_history'];
+            }
+            if(!empty($this->field['sexual_history'])){
+                $consultObj->sexual_history = $this->field['sexual_history'];
+            }
+            if(!empty($this->field['family_history'])){
+                $consultObj->family_history = $this->field['family_history'];
+            }
+            if(!empty($this->field['blood_pressure'])){
+                $consultObj->blood_pressure = $this->field['blood_pressure'];
+            }
+            if(!empty($this->field['pulse_rate'])){
+                $consultObj->pulse_rate = $this->field['pulse_rate'];
+            }
+            if(!empty($this->field['temprature'])){
+                $consultObj->temprature = $this->field['temprature'];
+            }
+            if(!empty($this->field['appetite'])){
+                $consultObj->appetite = $this->field['appetite'];
+            }
+            if(!empty($this->field['thirst'])){
+                $consultObj->thirst = $this->field['thirst'];
+            }
+            if(!empty($this->field['addiction'])){
+                $consultObj->addiction = $this->field['addiction'];
+            }
+            if(!empty($this->field['thermalReaction'])){
+                $consultObj->thermalReaction = $this->field['thermalReaction'];
+            }
+            if(!empty($this->field['perspiration'])){
+                $consultObj->perspiration = $this->field['perspiration'];
+            }
+            if(!empty($this->field['urine'])){
+                $consultObj->urine = $this->field['urine'];
+            }
+            if(!empty($this->field['stool'])){
+                $consultObj->stool = $this->field['stool'];
+            }
+            if(!empty($this->field['desire'])){
+                $consultObj->desire = $this->field['desire'];
             }
 
-            if($userObj->save()){
-                $message = 'User updated successfully.';
+            if($consultObj->save()){
+                $message = 'Consult updated successfully.';
                 $status = 1;
             } else {
                 $status = 0;
-                $message = 'Unabel to update user, please try again later!';
+                $message = 'Unabel to update Consult, please try again later!';
             }
         } catch (\Exception $ex) {
             $status = 0;

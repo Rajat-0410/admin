@@ -49,9 +49,9 @@ class DiseaseCategorieController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index()
     {
-        $diseasecategorie = DiseaseCategorie::where('disease_id', $id)->get();
+        $diseasecategorie = DiseaseCategorie::get();
         return response()->json(
         [
             'result' => 'success',

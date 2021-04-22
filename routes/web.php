@@ -15,7 +15,7 @@ Route::get('/', ['as' => 'home', 'uses' => 'Website\HomeController@index']);
 Route::get('/term-condition', ['as' => 'term-condition', 'uses' => 'Website\WebsiteCommonController@termCondition']);
 Route::get('/privacy-policy', ['as' => 'privacy-policy', 'uses' => 'Website\WebsiteCommonController@privacyPolicy']);
 
-Route::group(['prefix' => 'user'], function () {
+Route::group(['prefix' => 'api/user'], function () {
     Route::post('login', ['as' => 'login', 'uses' => 'User\UserController@login']);
     Route::post('verify/{id}', ['as' => 'verify', 'uses' => 'User\UserController@verify']);
     
@@ -37,27 +37,23 @@ Route::group(['prefix' => 'user'], function () {
         
         Route::get('disease', ['as' => 'disease', 'uses' => 'Disease\DiseaseCategorieController@index']);
         Route::get('disease/category/{id}', ['as' => 'disease/category', 'uses' => 'Disease\DiseaseController@index']);
-        // Route::get('/disease', 'DiseaseController@index');
-        // Route::get('/disease/category/{id}', 'DiseaseCategorieController@index');
         
         // //medicalrecord
-        // Route::get('/medicalrecord', 'UserMedicalRecordController@index');
-        // Route::get('/medicalrecord/{id}', 'UserMedicalRecordController@show');
-        // Route::post('/medicalrecord', 'UserMedicalRecordController@store');
-        // Route::patch('/medicalrecord/{id}', 'UserMedicalRecordController@update');
+        Route::get('medicalrecord', ['as' => 'medicalrecord', 'uses' => 'MedicalRecord\MedicalRecordController@index']);
+        Route::get('medicalrecord/{id}', ['as' => 'medicalrecord', 'uses' => 'MedicalRecord\MedicalRecordController@medicalRecordSingle']);
+        Route::post('medicalrecord/store', ['as' => 'medicalrecord/store', 'uses' => 'MedicalRecord\MedicalRecordController@store']);
         
         // //medicalrecordimage
-        // Route::post('/medicalrecordimage/{id}', 'UserMedicalRecordImageController@upload');
-        // Route::get('/medicalrecordimage/image/{filename}', 'UserMedicalRecordImageController@showImage');
+        Route::post('medicalrecordimage/{id}', ['as' => 'medicalrecordimage', 'uses' => 'MedicalRecord\MedicalRecordController@uploadImage']);
+        Route::post('medicalrecordimage/image/{filename}', ['as' => 'medicalrecordimage/image', 'uses' => 'MedicalRecord\MedicalRecordController@showImage']);
 
         // //consult
-        // Route::post('/consult', 'UserConsultController@store');
-        // Route::get('/consult/{id}', 'UserConsultController@show');
-        // Route::get('/consult', 'UserConsultController@index');
-        // Route::patch('/consult/{id}', 'UserConsultController@update');
+        Route::get('consult', ['as' => 'consult', 'uses' => 'ConsultManagement\ConsultManagementController@allConsultUser']);
+        Route::get('consult/{id}', ['as' => 'consult', 'uses' => 'ConsultManagement\ConsultManagementController@singleConsultUser']);
+        Route::post('consult/store', ['as' => 'consult/store', 'uses' => 'ConsultManagement\ConsultManagementController@store']);
 
         // //consult image
-        // Route::post('/consultimage/{consult_id}', 'UserConsultImageController@store');
+        Route::post('consultimage/{consult_id}', ['as' => 'consultimage', 'uses' => 'ConsultManagement\ConsultManagementController@uploadImage']);
 
         // //payment
         // Route::post('/payment', 'PaymentController@store');
